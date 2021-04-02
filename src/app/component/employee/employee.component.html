@@ -1,0 +1,155 @@
+<div class="wrapper"> 
+    <app-navbar></app-navbar>
+    <!-- Page Content  -->
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid d-block d-sm-none">
+          <div class="mob-head"> <img src="../../../../assets/images/logo2.png" class="img-fluid d-block mx-auto" /> </div>
+        </div>
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-default d-block d-lg-none collapse-btn"> <i class="fas fa-align-left"></i> </button>
+          <!--<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                          <i class="fas fa-align-justify"></i>
+                      </button>-->
+          <h5 class="d-none d-lg-block text-uppercase">Dashboard > Reports > SP Reservices % </h5>
+          <h5 class="d-block d-lg-none m-auto text-center mob-heading"> SP Reservice % </h5>
+          <h5 class="d-inline-block mr-sm-5" tabindex="0" data-html="true" data-toggle="popover" data-trigger="focus" data-title="" [attr.data-content]="name[2]" data-placement="bottom"><i class="fa fa-user-circle mr-2"></i><span class="d-none d-sm-inline">Ankit singh</span></h5>
+          <a href="javascript:void(0)" (click)="logout()" class="position-absolute logout-btn"><img src="../../../../assets/images/logout.ico" width="25"></a> <a href="#" class="d-block d-sm-none mob-srch" style="visibility:hidden"><i class="fa fa-search"></i></a> 
+          <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">
+                          <ul class="nav navbar-nav ml-auto">
+                              <li class="nav-item active">
+                                  <a class="nav-link" href="#">Page</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#">Page</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#">Page</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#">Page</a>
+                              </li>
+                          </ul>
+                      </div>--> 
+        </div>
+      </nav>
+      <div class="container-fluid">
+        <div class="row dash-tab">
+          <!--<div class="col-sm-12">
+            <ul class="nav nav-pills">
+              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home">Branch</a> </li>
+              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#menu1">Service Pro</a> </li>
+            </ul>
+          </div>-->
+          <!--<div class="col-sm-4">
+            <a href="#"><p class="small text-right mt-4"><span class="actv-acnt">124</span> total active accounts</p></a>
+          </div>-->
+          <!--<div class="col-sm-4">
+                  <div class="input-group mb-3 cus-srch">
+                        <div class="input-group-prepend">
+                          <button class="btn" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search Account Number" aria-label="">
+                      </div>
+              </div>-->
+         
+            
+              <div class="col-sm-12">
+                <p>Select BRANCH And DATE RANGE of report</p>
+              </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <ng-select [items]="branch"  bindLabel="pr_branch_name" bindValue ="pr_branch_id"  [closeOnSelect]=true [clearOnBackspace]="false" placeholder="SELECT BRANCH" [(ngModel)]="selectedBranchId"  (change) = "getAllActiveServicePro()"   [clearSearchOnAdd] = true autoCorrect = 'on' notFoundText = 'Loading...' loadingText = "Loading...">
+                          <!-- <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                              <div class="ng-value" *ngIf="items.length" >
+                                  <span class="ng-value-label">{{items.length}} branch selected</span>
+                              </div>
+                          </ng-template> -->
+                        </ng-select>
+                  </div>
+                  </div>
+                  <div class="col-sm-3">
+                  <div class="form-group">
+                      <ng-select [items]="serviceProName" bindLabel="name" bindValue = "id" [multiple]="true" [closeOnSelect]=false [clearOnBackspace]=true placeholder="SELECT SERVICEPRO" [(ngModel)]="selectedServiceProId" (click)="checkBranchId()" [virtualScroll]="true" [clearSearchOnAdd]="true" autoCorrect=on notFoundText="Loading..." >
+                           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngIf="items.length" >
+                            <span class="ng-value-label">{{items.length}} SP selected</span>
+                        </div>
+                          </ng-template> 
+                          <ng-template ng-header-tmp>
+                              <div>
+                              <input type="checkbox" class="chkmrk" id="ossm" [(ngModel)]="selectAll" name="selectAll" (click)="onSelectAll()">
+                              <span class="ng-value-label">&nbsp;<b>Select All</b></span>
+                             </div>
+                            </ng-template>
+                        
+                        </ng-select>
+                  </div>
+                  </div>
+                  <div class="col-sm-2 cus-srch">
+              <div class="form-group">
+                <input type="text" placeholder="FROM"  class="form-control pl-0" placeholder = "FROM" 
+                [(ngModel)]="fromDate" 
+                [owlDateTime]="dt1" 
+                [owlDateTimeTrigger]="dt1"
+                [max]="max">
+                <owl-date-time pickerType="calendar" #dt1></owl-date-time>
+                <span class="float-icon"><i class="fa fa-calendar-alt"></i></span>
+                
+              </div>
+              </div>
+              <div class="col-sm-2 cus-srch">
+              <div class="form-group">
+                <input type="text" placeholder="FROM"  class="form-control pl-0" placeholder = "TO" 
+                [(ngModel)]="toDate" 
+                [owlDateTime]="dt2" 
+                [owlDateTimeTrigger]="dt2"
+                [max]="max">
+                <owl-date-time pickerType="calendar" #dt2></owl-date-time>
+                <span class="float-icon"><i class="fa fa-calendar-alt"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <button class="shortcut-btn d-block w-100" (click) = "getReserviceReports()">Submit</button>
+              </div>
+            </div> 
+            
+                  
+                  <div class="col-sm-12">
+                 <div class="table-responsive">
+                  <table class="table details_table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name<a href = 'javascript:void(0)' (click)="changeOrder('fname')" class="caret-sort"><i class="fa" [class.fa-caret-down]="!sortOrder" [class.fa-caret-up]="sortOrder"></i></a></th>
+                        <th scope="col">Completed Reservices</th>
+                        <th scope="col">Reservices Caused by SP $</th>
+                        <th scope="col">Reservices Percentage %</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf='reservices?.length; else elseBlock'>
+                      <tr *ngFor = 'let reservice of reservices'>
+                        <td>{{reservice.fname}} {{reservice.lname}}</td>
+                        <td>{{reservice.completed_services | number}}</td>
+                        <td>{{reservice.reservices_causedby | number}}</td>
+                        <td>{{reservice.reservices_percent | percent}}</td>
+                      </tr>
+                     </tbody>
+                      <ng-template #elseBlock>
+                        <tbody>
+                          <tr>
+                            <td class="text-center" colspan="100%">{{response}}</td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                  </table>
+                </div>
+                </div>
+                
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
