@@ -1,0 +1,9 @@
+{
+    "/api/*": {
+        "target": "https://afternoon-shore-07470.herokuapp.com/api/v1",
+        "secure": true,
+        "changeOrigin": "true",
+        "logLevel": "debug",
+        "pathRewrite": {"^/api": ""}
+    }
+}

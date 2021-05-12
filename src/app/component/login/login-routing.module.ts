@@ -5,7 +5,7 @@ import { NoAuthService } from 'src/app/service/no-auth/no-auth.service';
 
 
 const routes: Routes = [
-  {path: '', component: LoginComponent, canActivate: [NoAuthService]}
+  {path: '', component: LoginComponent}
 ];
 
 @NgModule({

@@ -3,9 +3,9 @@
   </div> -->
   <div class="container-fluid position-relative" style="height:100vh;">
     <div class="row">
-      <div class="login-box">
+      <div class="login-box" style="margin-top: 7%;" >
         <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
-          <div class="p-2"> <img src="../../../../assets/images/logo2.png" class="img-fluid mb-4 d-block mx-auto" />
+          <div class="p-2"> <h2 style="text-align: center;"><B> <i class="fas fa-heart" style="color:red"></i>&nbsp;<span style="color:red">DESI</span> CHINESE</B></h2>
   
             <form id=loginForm role="form" #loginForm="ngForm">
   
@@ -16,22 +16,15 @@
                   {{ serverError || 'Incorrect Username or Password!'}}
                 </div>
               </div> -->
-              <div class="group animated fadeIn" *ngIf="loginForm.submitted && loginForm.invalid">
+              <div class="group animated fadeIn" *ngIf="loginError">
                 <div class="alert alert-danger text-center ">
-                  <!-- <a href="#"  data-dismiss="alert" aria-label="close"> <span style="float:right" class="text-danger" >&times;</span> </a>  -->
-                  <div
-                    *ngIf="loginForm.controls['email']?.hasError('required') && loginForm.controls['password']?.hasError('required'); else invalidCreds">
-                    <span>Username and Password is required!</span>
-                  </div>
-                  <ng-template #invalidCreds>
-                    <span *ngIf="loginForm.controls['email']?.hasError('required')">Username is required!</span>
-                    <span *ngIf="loginForm.controls['password']?.hasError('required')">Password is required!</span>
-                  </ng-template>
+                {{message}}
+
                 </div>
               </div>
   
               <div class="form-group position-relative">
-                <input type="text" class="form-control mb-4" placeholder="USERNAME" name="email" [(ngModel)]="email"
+                <input type="text" class="form-control mb-4" placeholder="USERNAME" name="email" [(ngModel)]="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                   required />
                 <span class="user-icon"></span>
               </div>
@@ -55,7 +48,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-success log-btn w-100">Login</button>
+                <button type="submit" class="btn btn-success log-btn w-100" (click)="login()" [disabled]="!loginForm.valid">Login</button>
               </div>
             </form>
 

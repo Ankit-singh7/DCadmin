@@ -1,155 +1,198 @@
-<div class="wrapper"> 
-    <app-navbar></app-navbar>
-    <!-- Page Content  -->
-    <div id="content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <div class="container-fluid d-block d-sm-none">
-          <div class="mob-head"> <img src="../../../../assets/images/logo2.png" class="img-fluid d-block mx-auto" /> </div>
+
+  <!-- Page Content  -->
+
+    <div class="container-fluid">
+      <div class="row dash-tab">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>+ Add
+                Waiter/Employee</b></button>
+          </div>
         </div>
-        <div class="container-fluid">
-          <button type="button" id="sidebarCollapse" class="btn btn-default d-block d-lg-none collapse-btn"> <i class="fas fa-align-left"></i> </button>
-          <!--<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                          <i class="fas fa-align-justify"></i>
-                      </button>-->
-          <h5 class="d-none d-lg-block text-uppercase">Dashboard > Reports > SP Reservices % </h5>
-          <h5 class="d-block d-lg-none m-auto text-center mob-heading"> SP Reservice % </h5>
-          <h5 class="d-inline-block mr-sm-5" tabindex="0" data-html="true" data-toggle="popover" data-trigger="focus" data-title="" [attr.data-content]="name[2]" data-placement="bottom"><i class="fa fa-user-circle mr-2"></i><span class="d-none d-sm-inline">Ankit singh</span></h5>
-          <a href="javascript:void(0)" (click)="logout()" class="position-absolute logout-btn"><img src="../../../../assets/images/logout.ico" width="25"></a> <a href="#" class="d-block d-sm-none mob-srch" style="visibility:hidden"><i class="fa fa-search"></i></a> 
-          <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                          <ul class="nav navbar-nav ml-auto">
-                              <li class="nav-item active">
-                                  <a class="nav-link" href="#">Page</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="#">Page</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="#">Page</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="#">Page</a>
-                              </li>
-                          </ul>
-                      </div>--> 
+
+
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table class="table details_table">
+              <thead>
+                <tr>
+                  <th scope="col">Name<a href='javascript:void(0)' (click)="changeOrder('firstName')"
+                      class="caret-sort"><i class="fa" [class.fa-caret-down]="!sortOrder"
+                        [class.fa-caret-up]="sortOrder"></i></a></th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">User Name</th>
+                  <th scope="col">Password</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody *ngIf='employeeList?.length; else elseBlock'>
+                <tr *ngFor='let item of employeeList; let i=index;'>
+                  <td><B>{{item.firstName | titlecase}} {{item.lastName | titlecase}}</B></td>
+                  <td>{{item.mobileNumber}}</td>
+                  <td>{{item.email}}</td>
+                  <td>{{item.password}}</td>
+                  <td>{{item.status | titlecase}}</td>
+                  <td>
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addWaiter2"
+                      (click)="getEmployeeDetail(item.userId)"><i class="fa fa-pencil"></i></button>
+                    <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"
+                      (click)="deleteEmployee(i,item.userId)"><i class="fa fa-trash-o"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+              <ng-template #elseBlock>
+                <tbody>
+                  <tr>
+                    <td class="text-center" colspan="100%">{{response}}</td>
+                  </tr>
+                </tbody>
+              </ng-template>
+            </table>
+          </div>
         </div>
-      </nav>
-      <div class="container-fluid">
-        <div class="row dash-tab">
-          <!--<div class="col-sm-12">
-            <ul class="nav nav-pills">
-              <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home">Branch</a> </li>
-              <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#menu1">Service Pro</a> </li>
-            </ul>
-          </div>-->
-          <!--<div class="col-sm-4">
-            <a href="#"><p class="small text-right mt-4"><span class="actv-acnt">124</span> total active accounts</p></a>
-          </div>-->
-          <!--<div class="col-sm-4">
-                  <div class="input-group mb-3 cus-srch">
-                        <div class="input-group-prepend">
-                          <button class="btn" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Search Account Number" aria-label="">
-                      </div>
-              </div>-->
-         
-            
-              <div class="col-sm-12">
-                <p>Select BRANCH And DATE RANGE of report</p>
-              </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                      <ng-select [items]="branch"  bindLabel="pr_branch_name" bindValue ="pr_branch_id"  [closeOnSelect]=true [clearOnBackspace]="false" placeholder="SELECT BRANCH" [(ngModel)]="selectedBranchId"  (change) = "getAllActiveServicePro()"   [clearSearchOnAdd] = true autoCorrect = 'on' notFoundText = 'Loading...' loadingText = "Loading...">
-                          <!-- <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                              <div class="ng-value" *ngIf="items.length" >
-                                  <span class="ng-value-label">{{items.length}} branch selected</span>
-                              </div>
-                          </ng-template> -->
-                        </ng-select>
-                  </div>
-                  </div>
-                  <div class="col-sm-3">
-                  <div class="form-group">
-                      <ng-select [items]="serviceProName" bindLabel="name" bindValue = "id" [multiple]="true" [closeOnSelect]=false [clearOnBackspace]=true placeholder="SELECT SERVICEPRO" [(ngModel)]="selectedServiceProId" (click)="checkBranchId()" [virtualScroll]="true" [clearSearchOnAdd]="true" autoCorrect=on notFoundText="Loading..." >
-                           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                           <div class="ng-value" *ngIf="items.length" >
-                            <span class="ng-value-label">{{items.length}} SP selected</span>
-                        </div>
-                          </ng-template> 
-                          <ng-template ng-header-tmp>
-                              <div>
-                              <input type="checkbox" class="chkmrk" id="ossm" [(ngModel)]="selectAll" name="selectAll" (click)="onSelectAll()">
-                              <span class="ng-value-label">&nbsp;<b>Select All</b></span>
-                             </div>
-                            </ng-template>
-                        
-                        </ng-select>
-                  </div>
-                  </div>
-                  <div class="col-sm-2 cus-srch">
-              <div class="form-group">
-                <input type="text" placeholder="FROM"  class="form-control pl-0" placeholder = "FROM" 
-                [(ngModel)]="fromDate" 
-                [owlDateTime]="dt1" 
-                [owlDateTimeTrigger]="dt1"
-                [max]="max">
-                <owl-date-time pickerType="calendar" #dt1></owl-date-time>
-                <span class="float-icon"><i class="fa fa-calendar-alt"></i></span>
-                
-              </div>
-              </div>
-              <div class="col-sm-2 cus-srch">
-              <div class="form-group">
-                <input type="text" placeholder="FROM"  class="form-control pl-0" placeholder = "TO" 
-                [(ngModel)]="toDate" 
-                [owlDateTime]="dt2" 
-                [owlDateTimeTrigger]="dt2"
-                [max]="max">
-                <owl-date-time pickerType="calendar" #dt2></owl-date-time>
-                <span class="float-icon"><i class="fa fa-calendar-alt"></i></span>
-              </div>
-            </div>
-            <div class="col-sm-2">
-              <div class="form-group">
-                <button class="shortcut-btn d-block w-100" (click) = "getReserviceReports()">Submit</button>
-              </div>
-            </div> 
-            
-                  
-                  <div class="col-sm-12">
-                 <div class="table-responsive">
-                  <table class="table details_table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Name<a href = 'javascript:void(0)' (click)="changeOrder('fname')" class="caret-sort"><i class="fa" [class.fa-caret-down]="!sortOrder" [class.fa-caret-up]="sortOrder"></i></a></th>
-                        <th scope="col">Completed Reservices</th>
-                        <th scope="col">Reservices Caused by SP $</th>
-                        <th scope="col">Reservices Percentage %</th>
-                      </tr>
-                    </thead>
-                    <tbody *ngIf='reservices?.length; else elseBlock'>
-                      <tr *ngFor = 'let reservice of reservices'>
-                        <td>{{reservice.fname}} {{reservice.lname}}</td>
-                        <td>{{reservice.completed_services | number}}</td>
-                        <td>{{reservice.reservices_causedby | number}}</td>
-                        <td>{{reservice.reservices_percent | percent}}</td>
-                      </tr>
-                     </tbody>
-                      <ng-template #elseBlock>
-                        <tbody>
-                          <tr>
-                            <td class="text-center" colspan="100%">{{response}}</td>
-                          </tr>
-                        </tbody>
-                      </ng-template>
-                  </table>
-                </div>
-                </div>
-                
-          
-        </div>
+
+
       </div>
     </div>
+
+
+<div id="addWaiter" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="padding:2%">
+      <form id="subform" role="form" #subForm="ngForm">
+        <div class="row">
+          <div class="col-12">
+            <h5>Add an Employee</h5>
+          </div>
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class=" form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="First Name" name="fname" [(ngModel)]="firstName"
+                required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Last Name" name="lname" [(ngModel)]="lastName"
+                required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Email" name="em" [(ngModel)]="email"
+                autocomplete="new-password" required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Password" name="pass" [(ngModel)]="password"
+                autocomplete="new-password" required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Mobile Number" name="mob" [(ngModel)]="phone"
+                required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                </div>
+                <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="status"
+                  name="stat" (change)="addStatus($event.target.value)">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" style="text-align: center;">
+            <button type="button" class="btn btn-success" [disabled]="!subForm.valid"
+              (click)="addEmployee()">SUBMIT</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
   </div>
-  
-  
+</div>
+
+<div id="addWaiter2" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeEditModal>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="padding:2%">
+      <form id="subform2" role="form" #subForm2="ngForm" *ngIf="detail">
+        <div class="row">
+          <div class="col-12">
+            <h5>Edit Employee Detail</h5>
+          </div>
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class=" form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="First Name" name="fname1"
+                [(ngModel)]="detail.firstName" required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Last Name" name="lname1"
+                [(ngModel)]="detail.lastName" required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Email" name="em" [(ngModel)]="detail.email"
+                autocomplete="new-password" required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Phone" name="phe"
+                [(ngModel)]="detail.mobileNumber" autocomplete="new-password" required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Password" name="esssm" [(ngModel)]="detail.password"
+                autocomplete="new-password" required />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="form-group position-relative">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                </div>
+                <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01"
+                  [(ngModel)]="detail.status" name="stat2" (change)="editStatus($event.target.value)">
+                  <option value="Active" [selected]="detail.status === 'Active'">Active</option>
+                  <option value="Inactive" [selected]="detail.status === 'Inactive'">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" style="text-align: center;">
+            <button type="button" class="btn btn-success" [disabled]="!subForm2.valid"
+              (click)="editEmployee(detail.userId)">EDIT</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

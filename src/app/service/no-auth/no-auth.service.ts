@@ -14,7 +14,7 @@ export class NoAuthService implements CanActivate {
         return true;
     } else  {
     // not logged in so redirect to login page with the return url and return false
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/user/employee']);
       return false;
     }
 }

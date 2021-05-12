@@ -1,0 +1,261 @@
+
+
+
+        <div class="container-fluid">
+          <div class="row dash-tab">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>+ Add
+                    Food item</b></button>
+              </div>
+            </div>
+    
+    
+            <div class="col-sm-12">
+              <div class="table-responsive">
+                <table class="table details_table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name<a href='javascript:void(0)' (click)="changeOrder('name')"
+                          class="caret-sort"><i class="fa" [class.fa-caret-down]="!sortOrder"
+                            [class.fa-caret-up]="sortOrder"></i></a></th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Category</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Mostly Used</th>
+                      <th scope="col">Action</th>
+                      <th scope="col">Ingredient</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf='foodList?.length; else elseBlock'>
+                    <tr *ngFor='let item of foodList; let i=index;'>
+                      <td><B>{{item.name | titlecase}}</B></td>
+                      <td>{{item.type}}</td>
+                      <td>{{item.price}}.00</td>
+                      <td>{{item.category_name}}</td>
+                      <td>{{item.status}}</td>
+                      <td>{{item.mostly_used}}</td>
+                      <td>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addWaiter2"
+                          (click)="getFoodDetail(item.sub_category_id)"><i class="fa fa-pencil"></i></button>
+                        <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"
+                          (click)="deleteFood(i,item.sub_category_id)"><i class="fa fa-trash-o"></i></button>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-success btn-sm"
+                          [routerLink]="['/user/food-ing']" [queryParams]="{id: item.sub_category_id}"><i class="fa fa-eye"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <ng-template #elseBlock>
+                    <tbody>
+                      <tr>
+                        <td class="text-center" colspan="100%">{{response}}</td>
+                      </tr>
+                    </tbody>
+                  </ng-template>
+                </table>
+              </div>
+            </div>
+    
+    
+          </div>
+        </div>
+
+  
+    <div id="addWaiter" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel" aria-hidden="true"  #closeAddModal>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding:2%">
+          <form id="subform" role="form" #subForm="ngForm">
+            <div class="row">
+              <div class="col-12">
+                <h5>Add Food</h5>
+              </div>
+              <div class="col-sm-11 col-md-5">
+                  <div class="form-group position-relative">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Select Category</label>
+                        </div>
+                           <!-- <ng-select [items]="foodCategoryList"  bindLabel="name" bindValue ="category_id"  [closeOnSelect]=true  name="sc" [clearOnBackspace]="false" placeholder="SELECT BRANCH" [(ngModel)]="selectedCategory"  (change) = "getFoodCatList()"   [clearSearchOnAdd] = true autoCorrect = 'on' notFoundText = 'Loading...' loadingText = "Loading...">
+                          </ng-select> -->
+                          <select class="custom-select" placeholder="Choose Type" id="inputGroupSelect01" [(ngModel)]="selectedCategory" name="vn"  required>
+                             <ng-container *ngFor="let item of foodCategoryList">
+                                <option [value]="item.category_id">{{item.name}}</option>
+                          </ng-container>
+                           
+                       
+                      </select>
+                      </div>
+                    </div>
+            
+              </div>
+              <div  class="offset-md-1 col-sm-11 col-md-5">
+                <div class="form-group position-relative">
+                  <input type="text" class="form-control mb-4" placeholder="Food Name" name="fName" [(ngModel)]="foodName"
+                    required />
+                </div>
+              </div>
+              <div  class="col-sm-11 col-md-5">
+                <div class="form-group position-relative">
+                  <input type="number" class="form-control mb-4" placeholder="Food Price" name="fPrice" [(ngModel)]="price"
+                    required />
+                </div>
+              </div>
+              <div class="offset-md-1 col-sm-11 col-md-5">
+                  <div class="form-group position-relative">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Select Type</label>
+                        </div>
+                        <select class="custom-select" placeholder="Choose Type" id="inputGroupSelect01" [(ngModel)]="type" name="vn"  required>
+ 
+                              <option value="Veg">Veg</option>
+                              <option value="NonVeg">NonVeg</option>
+                         
+                        </select>
+                      </div>
+                    </div>
+              </div>
+              <div class="col-sm-11 col-md-5">
+                <div class="form-group position-relative">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Select Status</label>
+                      </div>
+                      <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="status" name="vs"  required>
+
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                       
+                      </select>
+                    </div>
+                  </div>
+            </div>
+            <div class="offset-md-1 col-sm-11 col-md-5">
+              <div class="form-group position-relative">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect01">Mostly Used</label>
+                    </div>
+                    <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="used" name="vsd"  required>
+
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                     
+                    </select>
+                  </div>
+                </div>
+          </div>
+            </div>
+            <div class="row">
+              <div class="col-12" style="text-align: center;">
+                <button type="button" class="btn btn-success" [disabled]="!subForm.valid"
+                  (click)="addFood()">SUBMIT</button>
+              </div>
+            </div>
+          </form>
+    
+        </div>
+      </div>
+    </div>
+    
+    <div id="addWaiter2" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeEditModal>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding:2%">
+            <form id="subform2" role="form" #subForm2="ngForm" *ngIf="detail">
+                <div class="row">
+                  <div class="col-12">
+                    <h5>Edit Food Detail</h5>
+                  </div>
+                  <div class="col-sm-11 col-md-5">
+                      <div class="form-group position-relative">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text" for="inputGroupSelect01">Select Category</label>
+                            </div>
+                               <!-- <ng-select [items]="foodCategoryList"  bindLabel="name" bindValue ="category_id"  [closeOnSelect]=true  name="sc" [clearOnBackspace]="false" placeholder="SELECT BRANCH" [(ngModel)]="selectedCategory"  (change) = "getFoodCatList()"   [clearSearchOnAdd] = true autoCorrect = 'on' notFoundText = 'Loading...' loadingText = "Loading...">
+                              </ng-select> -->
+                              <select class="custom-select" placeholder="Choose Type" id="inputGroupSelect01" [(ngModel)]="detail.category_id" name="vne"  required>
+                                 <ng-container *ngFor="let item of foodCategoryList">
+                                    <option [value]="item.category_id" [selected]="item.category_id === detail.category_id">{{item.name}}</option>
+                              </ng-container>
+                               
+                           
+                          </select>
+                          </div>
+                        </div>
+                
+                  </div>
+                  <div  class="offset-md-1 col-sm-11 col-md-5">
+                    <div class="form-group position-relative">
+                      <input type="text" class="form-control mb-4" placeholder="Food Name" name="fName2" [(ngModel)]="detail.name"
+                        required />
+                    </div>
+                  </div>
+                  <div  class="col-sm-11 col-md-5">
+                    <div class="form-group position-relative">
+                      <input type="number" class="form-control mb-4" placeholder="Food Price" name="fPrice2" [(ngModel)]="detail.price"
+                        required />
+                    </div>
+                  </div>
+                  <div class="offset-md-1 col-sm-11 col-md-5">
+                      <div class="form-group position-relative">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <label class="input-group-text" for="inputGroupSelect01">Select Type</label>
+                            </div>
+                            <select class="custom-select" placeholder="Choose Type" id="inputGroupSelect01" [(ngModel)]="detail.type" name="vn"  required>
+     
+                                  <option value="Veg">Veg</option>
+                                  <option value="NonVeg">NonVeg</option>
+                             
+                            </select>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="col-sm-11 col-md-5">
+                    <div class="form-group position-relative">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Select Status</label>
+                          </div>
+                          <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="detail.status" name="vs"  required>
+    
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                           
+                          </select>
+                        </div>
+                      </div>
+                </div>
+                <div class="offset-md-1 col-sm-11 col-md-5">
+                  <div class="form-group position-relative">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Mostly Used</label>
+                        </div>
+                        <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="detail.mostly_used" name="vs"  required>
+  
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                         
+                        </select>
+                      </div>
+                    </div>
+              </div>
+                </div>
+                <div class="row">
+                  <div class="col-12" style="text-align: center;">
+                    <button type="button" class="btn btn-success" [disabled]="!subForm2.valid"
+                      (click)="editFood(detail.sub_category_id)">SUBMIT</button>
+                  </div>
+                </div>
+              </form>
+    
+        </div>
+      </div>
+    </div>

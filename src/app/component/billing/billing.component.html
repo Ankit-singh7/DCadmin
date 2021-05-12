@@ -1,0 +1,179 @@
+
+    <!-- Page Content  -->
+
+
+      <div class="container-fluid">
+        <div class="row dash-tab">
+          <div class="col-sm-12">
+            <div class="form-group">
+               <h4>TOTAL SALES : &#x20B9; <span style="color:#69d73d">{{total}}.00</span></h4>
+            </div>
+          </div>
+          <div class="col-sm-2 cus-srch ">
+            <div class="form-group">
+              PAYMENT OPTION
+              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPaymentMode" (change)="payMode($event.target.value)">
+                <option value="All">CLEAR SEARCH</option>
+                <option value="Cash">Cash</option>
+                <option value="Paytm">Paytm</option>
+                <option value="Card">Card</option>
+                <option value="GooglePay">GooglePay</option>
+                <option value="PhonePe">PhonePe</option>
+              </select>
+             </div>
+          </div> 
+          <div class="col-sm-2 cus-srch ">
+            <div class="form-group">
+              BILL TYPE
+              <select name="dev" class="form-control pl-0" id="dev" [(ngModel)]="selectedDeliveryMode" (change)="deliveryMode($event.target.value)">
+                <option value="All">CLEAR SEARCH</option>
+                <option value="Home Delivery">Home Delivery</option>
+                <option value="Parcel">Parcel</option>
+                <option value="Dine-in">Dine-in</option>
+                <option value="Swiggy">Swiggy</option>
+                <option value="Zomato">Zomato</option>
+              </select>
+             </div>
+          </div> 
+          <div class="col-sm-2 cus-srch ">
+            <div class="form-group">
+              BILL BY
+              <select name="cars" class="form-control pl-0" id="cars" [(ngModel)]="selectedUserName" (change)="onUserSelect($event.target.value)">
+                <ng-container *ngFor="let item of userNameList">
+                  <option [value]="item.fullName">{{item.fullName}}</option>
+                </ng-container>
+              </select>
+             </div>
+          </div> 
+            <div class="col-sm-3 cus-srch">
+              <div class="form-group">
+                 SEARCH BY DATE
+                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="changedDate($event.target.value)">
+                
+              </div>
+            </div> 
+            <div class="col-sm-3 cus-srch">
+              <div class="form-group">
+                 SEARCH BY NAME
+                <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cutomer Name" [(ngModel)]="searchName" name="searchName">
+                
+              </div>
+            </div> 
+       
+
+            
+                  
+                  <div class="col-sm-12">
+                 <div class="table-responsive scrollmenu">
+                  <table class="table details_table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">Bill ID</th>
+                        <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
+                        <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
+                        <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th>
+                        <th scope="col">Customer <a href = 'javascript:void(0)' (click)="changeOrder('customer_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.customer_name" [class.fa-caret-up]="!sortFields.customer_name"></i></a></th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Bill Date </th>
+                        <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf='billList?.length; else elseBlock'>
+                      <tr *ngFor = "let item of billList | filter: 'customer_name': searchName | filter: 'payment_mode': selectedPaymentMode | filter: 'delivery_mode': selectedDeliveryMode | filter: 'user_name' : selectedUserName | filter: 'date': selectedDate; let i=index;">
+                        <td><B>{{item.bill_id}}</B></td>
+                        <td>&#x20B9; {{item.total_price}}</td>
+                        <td>{{item.payment_mode}}</td>
+                        <td>{{item.delivery_mode}}</td>
+                        <td>{{item.customer_name}}</td>
+                        <td>{{item.customer_phone}}</td>
+                        <td>{{item.customer_address}}</td>
+                        <td>{{item.createdOn | date:'MMM d, y, h:mm:ss a'}}</td>
+                        <td>{{item.user_name}}</td>
+                        <td>
+                          <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm" (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                      </tr>
+                     </tbody>
+                      <ng-template #elseBlock>
+                        <tbody>
+                          <tr>
+                            <td class="text-center" colspan="100%">{{response}}</td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                  </table>
+                </div>
+                </div>
+                
+          
+        </div>
+      </div>
+
+
+
+
+<!-- Edit Employee Modal -->
+    <div id="addWaiter7" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeEditModal>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding:2%">
+          <form id="subform2" role="form" #subForm2="ngForm" *ngIf="detail">
+            <div class="row">
+              <div class="col-12">
+                <h5>Edit Billing Detail</h5>
+              </div>
+              <div class="offset-md-1 col-sm-12 col-md-5">
+                <div class=" form-group position-relative">
+                  <input type="text" class="form-control mb-4" placeholder="First Name" name="fname1"
+                    [(ngModel)]="detail.firstName" required />
+                    {{detail.firstName}}
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-5">
+                <div class="form-group position-relative">
+                <input type="text" class="form-control mb-4" placeholder="Last Name" name="lname1"
+                [(ngModel)]="detail.lastName" required />
+               </div>  
+              </div>
+              </div>
+              <div class="row">
+                <div class="offset-md-1 col-sm-12 col-md-5">
+                  <div class="form-group position-relative">
+                  <input type="text" class="form-control mb-4" placeholder="Email" name="em"
+                  [(ngModel)]="detail.email" autocomplete="new-password" required />
+                 </div>  
+                </div>
+                <div class="col-sm-12 col-md-5">
+                  <div class="form-group position-relative">
+                  <input type="text" class="form-control mb-4" placeholder="Phone" name="phe"
+                  [(ngModel)]="detail.mobileNumber" autocomplete="new-password" required />
+                 </div>  
+                </div>
+              </div>
+              <div class="row">
+                <div class="offset-md-4 col-sm-12 col-md-4">
+                  <div class="form-group position-relative">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                      </div>
+                      <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="detail.status" name="stat2" (change)="editStatus($event.target.value)">
+                        <option value="Active" [selected]="detail.status === 'Active'">Active</option>
+                        <option value="Inactive" [selected]="detail.status === 'Inactive'">Inactive</option>
+                      </select>
+                    </div>
+                 </div>  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12" style="text-align: center;">
+                  <button type="button" class="btn btn-success" [disabled]="!subForm2.valid" (click)="editBill(detail.userId)">EDIT</button>
+                </div>
+              </div>
+          </form>
+  
+            </div>
+        </div>
+      </div>
+  

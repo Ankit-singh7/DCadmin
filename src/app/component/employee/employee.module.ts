@@ -4,9 +4,8 @@ import { FormsModule} from '@angular/forms';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { EmployeeComponent } from './employee.component';
-
+import { EmployeeService } from 'src/app/service/employee/employee.service';
 
 @NgModule({
   declarations: [EmployeeComponent],
@@ -14,10 +13,9 @@ import { EmployeeComponent } from './employee.component';
     CommonModule,
     EmployeeRoutingModule,
     FormsModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
     NgSelectModule,
     SharedModule
-  ]
+  ],
+  providers:[EmployeeService]
 })
 export class EmployeeModule { }

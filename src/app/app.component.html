@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<div class="loader loader-holder" *ngIf="ui.loaderState">
+    <img class="load img-responsive" src="assets/images/loader.gif">
+  </div>
+
+     <router-outlet></router-outlet>

@@ -1,27 +1,27 @@
 <!-- Sidebar  -->
 <nav id="sidebar">
-  <div class="sidebar-header"> <img src="../../../../assets/images/logo2.png" class="img-fluid d-block mx-auto" />
+  <div class="sidebar-header"> <h3 style="color:white"> <i class="fas fa-heart" style="color:red"></i>&nbsp;<span style="color:red">Desi</span> Chinese</h3>
   </div>
   <ul class="list-unstyled">
-    <li routerLinkActive="active"> <a routerLink="/admin/dashboard"><i class="fas fa-th-large"></i>&nbsp; Home</a> </li>
-    <li routerLinkActive="active"> <a href="#rankingSubmenu" data-toggle="collapse" aria-expanded="false"
-        class="dropdown-toggle"><i class="fas fa-chart-bar"></i> &nbsp; Rankings</a>
-      <ul class="collapse list-unstyled" id="rankingSubmenu">
-        <li routerLinkActive="active"> <a [routerLink]="['/ranking/branch-ranking']">Branch Rankings</a> </li>
-        <li routerLinkActive="active"> <a [routerLink]="['/ranking/service-pro-ranking']">Service Pro Rankings</a> </li>
-      </ul>
-    </li>
+    <li routerLinkActive="active"> <a routerLink="/user/employee"><i class="fas fa-user"></i> &nbsp; Employee List</a></li>
     <li routerLinkActive="active"> <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false"
-        class="dropdown-toggle"><i class="fas fa-file-alt"></i> &nbsp; Reports</a>
+        class="dropdown-toggle"><i class="fas fa-utensils"></i> &nbsp; Food Details</a>
       <ul class="collapse list-unstyled" id="reportSubmenu">
-        <li routerLinkActive="active"> <a [routerLink]="['/report/reservices']">SP Reservices %</a> </li>
-        <li routerLinkActive="active"> <a [routerLink]="['/report/payment-percentage']">SP Payment %</a> </li>
-        <!-- <li routerLinkActive = "active"> <a [routerLink] = "['/report/account-receivable']">Account Receivable</a> </li>
-          <li routerLinkActive = "active"> <a [routerLink] = "['/report/retention']">Retention</a> </li>
-          <li routerLinkActive = "active"> <a [routerLink] = "['/report/variance']">Variance</a> </li> -->
+        <li routerLinkActive="active"> <a [routerLink]="['/user/ingredient-cat']">Ingredeints Category</a> </li>
+        <li routerLinkActive="active"> <a [routerLink]="['/user/unit']">Ingredients Unit</a> </li>
+        <li routerLinkActive = "active"> <a [routerLink] = "['/user/ingredient']">Ingredeints</a> </li>
+          <li routerLinkActive = "active"> <a [routerLink] = "['/user/food-cat']">Food Category</a> </li>
+          <li routerLinkActive = "active"> <a [routerLink] = "['/user/food-list']">Food List</a> </li>
       </ul>
     </li>
-    <li routerLinkActive="active"> <a routerLink="/admin/view-user"><i class="fas fa-user"></i> &nbsp; Users</a></li>
-    <li routerLinkActive="active"> <a [routerLink]="['/crud']"><i class="fas fa-info"></i>&nbsp; CRUD</a> </li>
+    <li routerLinkActive="active"> <a [routerLink]="['/user/billing']"><i class="fas fa-shopping-cart"></i>&nbsp; Billing List</a> </li>
+    <li routerLinkActive="active"> <a [routerLink]="['/user/session']"><i class="fas fa-chart-bar"></i>&nbsp; Session List</a> </li>
+    <li routerLinkActive="active"> <a [routerLink]="['/user/report']"><i class="fas fa-file-alt"></i>&nbsp; Ingredeints Report</a> </li>
+    <!-- <li routerLinkActive="active"> <a href="#rankingSubmenu" data-toggle="collapse" aria-expanded="false"
+      class="dropdown-toggle"><i class="fas fa-cogs"></i> &nbsp; Settings</a>
+    <ul class="collapse list-unstyled" id="rankingSubmenu">
+      <li routerLinkActive="active"> <a [routerLink]="['/ranking/branch-ranking']">Change Password</a> </li>
+    </ul>
+  </li> -->
   </ul>
 </nav>
