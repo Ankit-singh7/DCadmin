@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EmployeeComponent } from './employee.component';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [EmployeeComponent],
@@ -14,7 +15,8 @@ import { EmployeeService } from 'src/app/service/employee/employee.service';
     EmployeeRoutingModule,
     FormsModule,
     NgSelectModule,
-    SharedModule
+    SharedModule,
+    NgxPaginationModule
   ],
   providers:[EmployeeService]
 })

@@ -9,6 +9,17 @@
                   Ingredient</b></button>
             </div>
           </div>
+          <div class="offset-md-7 col-sm-12 col-md-2 ">
+            <div class="form-group">
+              SELECT PER PAGE
+              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+             </div>
+          </div> 
   
   
           <div class="col-sm-12">
@@ -25,7 +36,7 @@
                   </tr>
                 </thead>
                 <tbody *ngIf='ingredientList?.length; else elseBlock'>
-                  <tr *ngFor='let item of ingredientList; let i=index;'>
+                  <tr *ngFor='let item of ingredientList| paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: total};  index as i;'>
                     <td><B>{{item.name | titlecase}}</B></td>
                     <td>{{item.category}}</td>
                     <td>{{item.unit}}</td>
@@ -45,6 +56,7 @@
                   </tbody>
                 </ng-template>
               </table>
+              <pagination-controls (pageChange)="getIngredientList($event)" style="text-align: center;"></pagination-controls>
             </div>
           </div>
   

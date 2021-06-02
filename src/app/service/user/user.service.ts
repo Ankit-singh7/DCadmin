@@ -15,11 +15,11 @@ export class UserService {
   }
 
   public changePassword(data):Observable<any> {
-    return this.http.post(`${environment.apiURL}/admin/resetPassword`,data)
+    return this.http.post(`${environment.apiURL}/admin/forgotPassword`,data)
   }
 
-  public getAllUsers(): Observable<any> {
-    return this.http.get(`${environment.apiURL}/users/view/all`)
+  public getAllUsers(perPage?:number,currentPage?:number): Observable<any> {
+    return this.http.get(`${environment.apiURL}/users/view/all?per_page=${perPage}&current_page=${currentPage}`)
   }
 
 

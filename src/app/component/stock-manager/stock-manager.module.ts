@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { IngredientReportRoutingModule } from './ingredient-report-routing.module';
-import { IngredientReportComponent } from './ingredient-report.component';
+import { StockManagerRoutingModule } from './stock-manager-routing.module';
+import { StockManagerComponent } from './stock-manager.component';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
-  declarations: [IngredientReportComponent],
+  declarations: [StockManagerComponent],
   imports: [
     CommonModule,
-    IngredientReportRoutingModule,
+    StockManagerRoutingModule,
     FormsModule,
     NgxPaginationModule
   ]
 })
-export class IngredientReportModule { }
+export class StockManagerModule { }

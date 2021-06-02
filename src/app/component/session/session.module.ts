@@ -5,6 +5,7 @@ import { SessionRoutingModule } from './session-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FilterPipe } from '../shared/pipe/filter.pipe';
 import { SessionComponent } from './session.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SessionComponent } from './session.component';
     CommonModule,
     FormsModule,
     SessionRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxPaginationModule
   ],
   providers: [FilterPipe]
 })

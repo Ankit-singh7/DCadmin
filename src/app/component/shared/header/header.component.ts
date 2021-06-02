@@ -48,6 +48,21 @@ export class HeaderComponent {
          if(this.activatedRoute === '/user/report') {
           this.title = 'INGREDIENT REPORT'
          }
+         if(this.activatedRoute === '/user/sm') {
+          this.title = 'STOCK MANAGER LIST'
+         }
+         if(this.activatedRoute === '/user/stock-list') {
+          this.title = 'STOCK LIST'
+         }
+         if(this.activatedRoute === '/user/stock-in') {
+          this.title = 'STOCK IN LIST'
+         }
+         if(this.activatedRoute === '/user/stock-out') {
+          this.title = 'STOCK OUT LIST'
+         }
+         if(this.activatedRoute === '/user/change-pass') {
+          this.title = 'CHANGE PASSWORD'
+         }
       }
     })
   }

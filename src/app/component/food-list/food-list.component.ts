@@ -28,6 +28,10 @@ export class FoodListComponent implements OnInit {
   type: any;
   foodName: any;
 
+  selectedPerPage = 10;
+  currentpage: number = 1;
+  total: number;
+
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   @ViewChild('closeAddModal') closeAddModal: ElementRef;
@@ -47,9 +51,9 @@ export class FoodListComponent implements OnInit {
 
   getFoodCatList = () => {
 
-    this.foodService.getFoodCategoryList().subscribe((res) => {
+    this.foodService.getFoodCategoryList(500,1).subscribe((res) => {
       if(res.data) {
-        this.foodCategoryList = res.data
+        this.foodCategoryList = res.data.result
       } 
 
     },(err) => {
@@ -58,14 +62,27 @@ export class FoodListComponent implements OnInit {
   }
 
 
-  getFoodList = () => {
-    this.foodService.getFoodList().subscribe((res) => {
+  getFoodList = (page?:number) => {
+    this.ui.loader.show()
+    if(page) {
+
+      this.currentpage = page
+    }
+    this.foodService.getFoodList(this.selectedPerPage,this.currentpage).subscribe((res) => {
       if(res.data) {
-        this.foodList = res.data
+        this.foodList = res.data.result
+        this.total = res.data.total
       }
+      this.ui.loader.hide()
     },(err) => {
+      this.ui.loader.hide()
       console.log(err)
     })
+  }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getFoodList()
   }
 
 

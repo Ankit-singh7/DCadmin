@@ -45,7 +45,27 @@ const routes: Routes = [
     {
       path:'report',
       loadChildren: () => import('../../../app/component/ingredient-report/ingredient-report.module').then( m => m.IngredientReportModule)
-    }
+    },
+    {
+      path: 'sm',
+      loadChildren: () => import('../../../app/component/stock-manager/stock-manager.module').then( m => m.StockManagerModule)
+    },
+    {
+      path: 'stock-list',
+      loadChildren: () => import('../../../app/component/stock-list/stock-list.module').then( m => m.StockListModule)
+    },
+    {
+      path: 'stock-in',
+      loadChildren: () => import('../../../app/component/stock-in/stock-in.module').then( m => m.StockInModule)
+    },
+    {
+      path: 'stock-out',
+      loadChildren: () => import('../../../app/component/stock-out/stock-out.module').then( m => m.StockOutModule)
+    },
+    {
+      path: 'change-pass',
+      loadChildren: () => import('../../../app/component/change-password/change-password.module').then( m => m.ChangePasswordModule)
+    },
   ]}
 ];
 

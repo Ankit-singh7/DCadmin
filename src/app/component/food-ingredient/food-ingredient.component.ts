@@ -36,7 +36,7 @@ export class FoodIngredientComponent implements OnInit {
   public quantity: string;
   public selectedCategory: string;
   public selectedUnit: string;
-  public selectedIngredient: string;
+  public selectedIngredient:any;
 
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
@@ -76,9 +76,9 @@ export class FoodIngredientComponent implements OnInit {
   }
 
   getAllCategory = () => {
-     this.foodService.getIngredientCategoryList().subscribe((res) => {
+     this.foodService.getIngredientCategoryList(500,1).subscribe((res) => {
        if(res.data) {
-         this.categoryList = res.data         
+         this.categoryList = res.data.result        
        }
      },(err) => {
       console.log(err)
@@ -86,10 +86,10 @@ export class FoodIngredientComponent implements OnInit {
   }
 
   getIngredientList = () => {
-    this.foodService.getIngredientList().subscribe((res) => {
+    this.foodService.getIngredientList(500,1).subscribe((res) => {
       if(res.data) {
-        this.ingredientList = res.data
-        this.mainIngrdientList = res.data
+        this.ingredientList = res.data.result
+        this.mainIngrdientList = res.data.result
 
       }
     },(err) => {
@@ -97,15 +97,15 @@ export class FoodIngredientComponent implements OnInit {
     })
   }
 
-  getselectedIngredient() {
-      if(this.selectedCategory) {
-          console.log(this.selectedCategory)
-          this.ingredientList = this.mainIngrdientList
-          this.ingredientList = this.ingredientList.filter((item) =>  item.category_id === this.selectedCategory)
+  // getselectedIngredient() {
+  //     if(this.selectedCategory) {
+  //         console.log(this.selectedCategory)
+  //         this.ingredientList = this.mainIngrdientList
+  //         this.ingredientList = this.ingredientList.filter((item) =>  item.category_id === this.selectedCategory)
 
-        }
+  //       }
 
-  }
+  // }
 
   getFoodIngredientList = (id) => {
     this.foodService.getFoodIngredientList(id).subscribe((res) => {
@@ -160,9 +160,9 @@ export class FoodIngredientComponent implements OnInit {
     this.ui.loader.show()
     const data = {
      sub_category_id:this.subId,
-     category_id: this.selectedCategory,
-     unit_id: this.selectedUnit,
-     ingredient_id: this.selectedIngredient,
+     category_id: this.selectedIngredient.category_id,
+     unit_id: this.selectedIngredient.unit_id,
+     ingredient_id: this.selectedIngredient.ingredient_id,
      quantity: this.quantity
      }
      this.foodService.createFoodIngredient(data).subscribe((res) => {
@@ -204,7 +204,7 @@ export class FoodIngredientComponent implements OnInit {
     (a, b) =>  !this.sortOrder ? a[field].localeCompare(b[field]) : b[field].localeCompare(a[field]));
   }
 
-  getSelectedCategory(val) {
+  getSelectedIngredient(val) {
     console.log(val);
   }
 

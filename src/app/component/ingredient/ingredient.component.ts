@@ -32,7 +32,11 @@ export class IngredientComponent implements OnInit {
   public detail:any;
   public ingredientName: string;
   public selectedCategory: string
-  public selectedUnit: string
+  public selectedUnit: string;
+
+  selectedPerPage = 10;
+  currentpage: number = 1;
+  total: number;
 
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
@@ -64,24 +68,39 @@ export class IngredientComponent implements OnInit {
   }
 
   getAllCategory = () => {
-     this.foodService.getIngredientCategoryList().subscribe((res) => {
+     this.foodService.getIngredientCategoryList(500,1).subscribe((res) => {
        if(res.data) {
-         this.categoryList = res.data
+         this.categoryList = res.data.result
        }
      },(err) => {
       console.log(err)
     })
   }
 
-  getIngredientList = () => {
-    this.foodService.getIngredientList().subscribe((res) => {
+  getIngredientList = (page?:number) => {
+    this.ui.loader.show()
+    if(page) {
+
+      this.currentpage = page
+    }
+    this.foodService.getIngredientList(this.selectedPerPage,this.currentpage).subscribe((res) => {
       if(res.data) {
-        this.ingredientList = res.data
+        this.ingredientList = res.data.result
+        this.total = res.data.total;
       }
+      this.ui.loader.hide()
     },(err) => {
+      this.ui.loader.hide()
       console.log(err)
     })
   }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getIngredientList()
+  }
+
+
 
 
   getIngredientDetail = (id) => {

@@ -21,6 +21,10 @@ export class IngredientCatComponent implements OnInit {
   public sortOrder = false;
   public fullName = localStorage.getItem('name')
 
+  selectedPerPage = 10;
+  currentpage: number = 1;
+  total: number;
+
 
   @ViewChild('closeEditModal2') closeEditModal: ElementRef;
 
@@ -36,14 +40,24 @@ export class IngredientCatComponent implements OnInit {
   }
 
 
-  getAllIngredientCat = () => {
+  getAllIngredientCat = (page?:number) => {
     this.ui.loader.show()
-    this.foodService.getIngredientCategoryList().subscribe((res) => {
+    if(page) {
+
+      this.currentpage = page
+    }
+    this.foodService.getIngredientCategoryList(this.selectedPerPage,this.currentpage).subscribe((res) => {
       if(res.data) {
-        this.ingredientCatList = res.data
+        this.ingredientCatList = res.data.result
+        this.total = res.data.total;
       } 
       this.ui.loader.hide()
     },(err) => this.ui.loader.hide())
+  }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getAllIngredientCat()
   }
 
 

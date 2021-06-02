@@ -10,19 +10,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './component/shared/shared.module';
-import { StockManagerComponent } from './component/stock-manager/stock-manager.component';
-import { StockListComponent } from './component/stock-list/stock-list.component';
-import { StockInComponent } from './component/stock-in/stock-in.component';
-import { StockOutComponent } from './component/stock-out/stock-out.component';
+import { ChangePasswordComponent } from './component/change-password/change-password.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    StockManagerComponent,
-    StockListComponent,
-    StockInComponent,
-    StockOutComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

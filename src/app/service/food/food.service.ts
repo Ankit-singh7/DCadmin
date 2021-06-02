@@ -14,8 +14,8 @@ export class FoodService {
 
   // Ingredient category api
 
-  getIngredientCategoryList = (): Observable<any> => {
-    return this.http.get(`${environment.apiURL}/ingredientCat/view/all`)
+  getIngredientCategoryList = (perPage?:number,currentPage?:number): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/ingredientCat/view/all?per_page=${perPage}&current_page=${currentPage}`)
   }
 
   createIngredientCategory = (data): Observable<any> => {
@@ -64,8 +64,8 @@ export class FoodService {
 
   // Ingredient List api
 
-  getIngredientList = (): Observable<any> => {
-    return this.http.get(`${environment.apiURL}/ingredient/view/all`)
+  getIngredientList = (perPage?:number,currentPage?:number): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/ingredient/view/all?per_page=${perPage}&current_page=${currentPage}`)
   }
 
   createIngredient = (data): Observable<any> => {
@@ -88,8 +88,8 @@ export class FoodService {
 
   // Food category api
 
-  getFoodCategoryList = (): Observable<any> => {
-    return this.http.get(`${environment.apiURL}/category/view/all`)
+  getFoodCategoryList = (perPage?:number,currentPage?:number): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/category/view/all?per_page=${perPage}&current_page=${currentPage}`)
   }
 
   createFoodCategory = (data): Observable<any> => {
@@ -115,8 +115,8 @@ export class FoodService {
 
   //Food List api
 
-  getFoodList = (): Observable<any> => {
-    return this.http.get(`${environment.apiURL}/subcategory/view/all`)
+  getFoodList = (perPage?:number,currentPage?:number): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/subcategory/view/all?per_page=${perPage}&current_page=${currentPage}`)
   }
 
   createFood = (data): Observable<any> => {
@@ -159,18 +159,36 @@ export class FoodService {
   // END
 
 
-  // Ingredient Report apu
+  // Ingredient Report api
 
-  getAllReport = ():Observable<any> => {
-    return this.http.get(`${environment.apiURL}/report/view/all`)
+  getAllReport = (perPage?:number,currentPage?:number,paramObj?:any):Observable<any> => {
+    return this.http.get(`${environment.apiURL}/report/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
   }
 
-  getReportByDate = (startDate, endDate): Observable<any> => {
-     console.log(startDate,endDate)
-     
-    return this.http.get(`${environment.apiURL}/report/${startDate}/${endDate}`)
-  }
 
+  // Stock Api
+    // Stock api
+
+    addStockIn = (data):Observable<any> => {
+      return this.http.post(`${environment.apiURL}/stock-in/create`,data)
+    }
+  
+    showStockInList = (perPage?:number,currentPage?:number):Observable<any> => {
+      return this.http.get(`${environment.apiURL}/stock-in/view/all?per_page=${perPage}&current_page=${currentPage}`)
+    }
+  
+    addStockOut = (data):Observable<any> => {
+      return this.http.post(`${environment.apiURL}/stock-out/create`,data)
+    }
+  
+    showStockOutList = (perPage?:number,currentPage?:number):Observable<any> => {
+      return this.http.get(`${environment.apiURL}/stock-out/view/all?per_page=${perPage}&current_page=${currentPage}`)
+    }
+
+    resetStock = (): Observable<any> => {
+      return this.http.get(`${environment.apiURL}/ingredient/status`)
+    }
+  
 
 
 

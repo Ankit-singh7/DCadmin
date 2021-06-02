@@ -11,7 +11,7 @@
           <div class="col-sm-2 cus-srch ">
             <div class="form-group">
               SESSION CREATED BY
-              <select name="cars" class="form-control pl-0" id="cars" [(ngModel)]="selectedUserName" (change)="onUserSelect($event.target.value)">
+              <select name="cars" class="form-control pl-0" id="cars" [(ngModel)]="selectedUserName" (change)="onOptionSelect('user',$event.target.value)">
                 <ng-container *ngFor="let item of userNameList">
                   <option [value]="item.fullName">{{item.fullName}}</option>
                 </ng-container>
@@ -21,9 +21,20 @@
             <div class="col-sm-3 cus-srch">
               <div class="form-group">
                  SEARCH BY DATE
-                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="changedDate($event.target.value)">
+                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
                 
               </div>
+            </div> 
+            <div class="offset-md-5 col-sm-2 cus-srch">
+              <div class="form-group">
+                SELECT PER PAGE
+                <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+               </div>
             </div> 
             
                   
@@ -39,7 +50,7 @@
                       </tr>
                     </thead>
                     <tbody *ngIf='sessionList?.length; else elseBlock' style="width:100%">
-                      <tr *ngFor = "let item of sessionList |  filter: 'user_name' : selectedUserName | filter: 'date': selectedDate; let i=index;">
+                      <tr *ngFor = "let item of sessionList | paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: totalPage};  index as i;">
                         <td><B>{{item.createdOn | date:'MMM d, y, h:mm:ss a'}}</B></td>
                         <!-- <td>{{item.total_price}}</td> -->
                         <td>{{item.user_name}}</td>
@@ -55,6 +66,7 @@
                         </tbody>
                       </ng-template>
                   </table>
+                  <pagination-controls (pageChange)="getSessionList($event)" style="text-align: center;"></pagination-controls>
                 </div>
                 </div>
                 

@@ -5,6 +5,7 @@ import { IngredientRoutingModule } from './ingredient-routing.module';
 import { IngredientComponent } from './ingredient.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import {NgxPaginationModule} from 'ngx-pagination'; 
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     SharedModule,
+    NgxPaginationModule,
     IngredientRoutingModule
   ]
 })

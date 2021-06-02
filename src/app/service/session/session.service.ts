@@ -10,7 +10,7 @@ export class SessionService {
 
   constructor(private http: HttpClient) { }
 
-  getSessionList(): Observable<any>{
-    return this.http.get(`${environment.apiURL}/session/view/all`)
+  getSessionList(perPage?:number,currentPage?:number,paramObj?:any): Observable<any>{
+    return this.http.get(`${environment.apiURL}/session/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
   }
 }

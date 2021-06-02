@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 declare var $;
 @Component({
   selector: 'app-navbar',
@@ -8,7 +9,7 @@ declare var $;
 export class NavbarComponent implements OnInit, AfterViewInit {
 
   public groupId: string;
-  constructor() {}
+  constructor(private route: Router) {}
   ngOnInit() {
   }
 
@@ -24,5 +25,11 @@ export class NavbarComponent implements OnInit, AfterViewInit {
           $('a[aria-expanded=true]').attr('aria-expanded', 'false');
       });
   });
+  }
+
+
+  logout(){
+    localStorage.setItem('isLoggedIn', String(false));
+    this.route.navigate(['/login']);
   }
 }

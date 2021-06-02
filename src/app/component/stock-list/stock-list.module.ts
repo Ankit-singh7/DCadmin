@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { IngredientCatRoutingModule } from './ingredient-cat-routing.module';
-import { IngredientCatComponent } from './ingredient-cat.component';
+import { StockListRoutingModule } from './stock-list-routing.module';
+import { StockListComponent } from './stock-list.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
-  declarations: [IngredientCatComponent],
+  declarations: [StockListComponent],
   imports: [
     CommonModule,
+    StockListRoutingModule,
     FormsModule,
-    IngredientCatRoutingModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ]
 })
-export class IngredientCatModule { }
+export class StockListModule { }

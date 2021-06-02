@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FoodService } from 'src/app/service/food/food.service';
 declare var $;
 import swal from 'sweetalert2';
+import { TemplateParseResult } from '@angular/compiler';
 
 
 @Component({
@@ -28,6 +29,11 @@ export class IngredientReportComponent implements OnInit {
   public selectedStartDate:any
   public selectedEndDate:any
   public total: any;
+
+
+selectedPerPage = 10;
+currentpage: number = 1;
+totalPage: number;
   
   
   
@@ -48,12 +54,54 @@ export class IngredientReportComponent implements OnInit {
 
   
   
-  getAllReport() {
+  getAllReport(page?:number) {
+    if(page) {
+      this.currentpage = page
+     }
+     let data = {
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate
+     }
+     let filterStr = '';
+     for (let item in data) {
+        if(data[item]) {
+          filterStr = `${filterStr}${item}=${data[item]}&`
+        }
+        }
     this.ui.loader.show()
-    this.foodService.getAllReport().subscribe((res) => {
-       if(res.data) {
-         this.reportList = res.data
+    this.foodService.getAllReport(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
+      this.reportList = [];
+      if(res.data) {
+        let arr1 = JSON.parse(JSON.stringify(res.data.result))
+        let keyArr = arr1.map((i) => i.ingredient_id)
+        console.log(keyArr)
+       for(let i = 0; i< arr1.length;i++) {
+        //  debugger
+         let tempArr = arr1.filter((item) => item.ingredient_id === arr1[i].ingredient_id)
+         console.log(tempArr)
+         if(tempArr.length>1) {
+           let newObj = JSON.parse(JSON.stringify(tempArr[0]))
+           let order = 0;
+           let stock = 0;
+           for(let j = 0; j<tempArr.length;j++) {
+             order = order + tempArr[j].quantity_by_order
+             stock = stock + tempArr[j].quantity_by_stock
+           }
+           newObj.quantity_by_order = order;
+           newObj.quantity_by_stock = stock;
+           if(!this.reportList.some(item => item.ingredient_id === newObj.ingredient_id )) {
+
+             this.reportList.push(Object.assign({}, newObj))
+           } 
+         } else {
+           this.reportList.push(tempArr[0])
+         }
        }
+       this.totalPage = this.reportList.length;
+
+
+
+      }
        this.ui.loader.hide()
     }, err => {
       this.ui.loader.hide()
@@ -61,14 +109,14 @@ export class IngredientReportComponent implements OnInit {
   }
 
   onDateSelect(){
-    if(this.selectedStartDate === undefined) {
+    if(!this.selectedStartDate) {
       swal.fire({
         icon: 'warning',
         title: 'Please Select Start Date',
         showConfirmButton: false,
         timer: 1500
       })
-    } else if(this.selectedEndDate === undefined) {
+    } else if(!this.selectedEndDate) {
       swal.fire({
         icon: 'warning',
         title: 'Please Select End Date',
@@ -76,20 +124,17 @@ export class IngredientReportComponent implements OnInit {
         timer: 1500
       })
     } else {
-      
-      this.ui.loader.show()
-      this.foodService.getReportByDate(`${moment(this.selectedStartDate).format('YYYY-DD-MM')}T00:00:00.000Z`,`${moment(this.selectedEndDate).format('YYYY-DD-MM')}T00:00:00.000Z`).subscribe((res) => {
-        this.reportList = []
-         if(res.data) {
-           this.reportList = []
-           this.reportList = res.data
-         }
-         this.ui.loader.hide()
-      }, err => {
-        this.ui.loader.hide()
-      })
+      this.selectedStartDate = moment(this.selectedStartDate).format('DD-MM-YYYY')
+      this.selectedEndDate = moment(this.selectedEndDate).format('DD-MM-YYYY')
+      this.getAllReport()
     }
   }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getAllReport()
+  }
+  
   
 
   
@@ -124,12 +169,7 @@ export class IngredientReportComponent implements OnInit {
     console.log(this.selectedEndDate)
   }
   
-  
-
-  
-  
-  
-  
+    
   logout = () => {
     localStorage.setItem('isLoggedIn', String(false));
     this.router.navigate(['/login']);

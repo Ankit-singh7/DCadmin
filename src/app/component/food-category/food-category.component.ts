@@ -22,6 +22,10 @@ export class FoodCategoryComponent implements OnInit {
   public sortOrder = false;
   public fullName = localStorage.getItem('name')
 
+  selectedPerPage = 10;
+  currentpage: number = 1;
+  total: number;
+
 
   @ViewChild('closeEditModal2') closeEditModal: ElementRef;
 
@@ -39,14 +43,24 @@ export class FoodCategoryComponent implements OnInit {
 
 
 
-  getAllFoodCat = () => {
+  getAllFoodCat = (page?:number) => {
     this.ui.loader.show()
-    this.foodService.getFoodCategoryList().subscribe((res) => {
+    if(page) {
+
+      this.currentpage = page
+    }
+    this.foodService.getFoodCategoryList(this.selectedPerPage,this.currentpage).subscribe((res) => {
       if(res.data) {
-        this.foodCatList = res.data
+        this.foodCatList = res.data.result
+        this.total = res.data.total
       } 
       this.ui.loader.hide()
     },(err) => this.ui.loader.hide())
+  }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getAllFoodCat()
   }
 
 

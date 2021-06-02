@@ -28,6 +28,9 @@ export class EmployeeComponent implements OnInit {
   public phone: string;
   public status: string;
   public detail:any;
+  selectedPerPage = 10;
+  currentpage: number = 1;
+  total: number;
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
 
@@ -52,14 +55,24 @@ export class EmployeeComponent implements OnInit {
   }
 
 
-  getEmployeesList() {
+  getEmployeesList(page?:number) {
     this.ui.loader.show()
-    this.employeeService.getEmployeeList().subscribe((res) => {
+    if(page) {
+
+      this.currentpage = page
+    }
+    this.employeeService.getEmployeeList(this.selectedPerPage,this.currentpage).subscribe((res) => {
       if(res.data) {
-        this.employeeList = res.data
+        this.employeeList = res.data.result
+        this.total = res.data.total
       } 
       this.ui.loader.hide()
     },(err) => this.ui.loader.hide())
+  }
+
+  onLimitSelect = (val) => {
+    this.selectedPerPage = val
+    this.getEmployeesList()
   }
 
 

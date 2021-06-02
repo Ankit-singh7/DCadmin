@@ -4,6 +4,7 @@
   </div>
   <ul class="list-unstyled">
     <li routerLinkActive="active"> <a routerLink="/user/employee"><i class="fas fa-user"></i> &nbsp; Employee List</a></li>
+    <li routerLinkActive="active"> <a routerLink="/user/sm"><i class="fas fa-user"></i> &nbsp; Stock Manager List</a></li>
     <li routerLinkActive="active"> <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false"
         class="dropdown-toggle"><i class="fas fa-utensils"></i> &nbsp; Food Details</a>
       <ul class="collapse list-unstyled" id="reportSubmenu">
@@ -17,11 +18,15 @@
     <li routerLinkActive="active"> <a [routerLink]="['/user/billing']"><i class="fas fa-shopping-cart"></i>&nbsp; Billing List</a> </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/session']"><i class="fas fa-chart-bar"></i>&nbsp; Session List</a> </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/report']"><i class="fas fa-file-alt"></i>&nbsp; Ingredeints Report</a> </li>
-    <!-- <li routerLinkActive="active"> <a href="#rankingSubmenu" data-toggle="collapse" aria-expanded="false"
+    <li routerLinkActive="active"> <a [routerLink]="['/user/stock-list']"><i class="fas fa-chart-bar"></i>&nbsp; Stock List</a> </li>
+    <li routerLinkActive="active"> <a [routerLink]="['/user/stock-in']"><i class="fas fa-shopping-cart"></i>&nbsp; Stock In List</a> </li>
+    <li routerLinkActive="active"> <a [routerLink]="['/user/stock-out']"><i class="fas fa-utensils"></i>&nbsp; Stock Out List</a> </li>
+    <li routerLinkActive="active"> <a href="#rankingSubmenu" data-toggle="collapse" aria-expanded="false"
       class="dropdown-toggle"><i class="fas fa-cogs"></i> &nbsp; Settings</a>
     <ul class="collapse list-unstyled" id="rankingSubmenu">
-      <li routerLinkActive="active"> <a [routerLink]="['/ranking/branch-ranking']">Change Password</a> </li>
+      <li routerLinkActive="active"> <a [routerLink]="['/user/change-pass']">Change Password</a> </li>
+      <li routerLinkActive="active" (click)="logout()"> <a>Logout</a> </li>
     </ul>
-  </li> -->
+  </li>
   </ul>
 </nav>

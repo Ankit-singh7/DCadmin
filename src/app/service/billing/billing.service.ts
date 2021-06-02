@@ -11,8 +11,8 @@ export class BillingService {
 
   constructor(private http: HttpClient) { }
 
-   getBillingList(): Observable<any> {
-     return this.http.get(`${environment.apiURL}/bill/view/all`)
+   getBillingList(perPage?:number,currentPage?:number,paramObj?:any): Observable<any> {
+     return this.http.get(`${environment.apiURL}/bill/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
    }
    deleteBill(id): Observable<any>{
      return this.http.get(`${environment.apiURL}/bill/${id}/delete`)

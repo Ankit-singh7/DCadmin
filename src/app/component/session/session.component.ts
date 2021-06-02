@@ -42,6 +42,11 @@ public userNameList:any = [];
 public total: any;
 
 
+selectedPerPage = 10;
+currentpage: number = 1;
+totalPage: number;
+
+
 
 @ViewChild('closeEditModal') closeEditModal: ElementRef;
 
@@ -71,9 +76,10 @@ editStatus(val){
 
 
 getAllUsers() {
-  this.userService.getAllUsers().subscribe((res) => {
-    this.userNameList.push({fullName: 'CLEAR SEARCH'})
-    let tempList = res.data.map((item) => ({
+
+  this.userService.getAllUsers(500,1).subscribe((res) => {
+    this.userNameList.push({fullName: 'ALL'})
+    let tempList = res.data.result.map((item) => ({
        fullName: `${item.firstName} ${item.lastName}`
     }))
     this.userNameList.push(...tempList)
@@ -93,17 +99,51 @@ getTotalSales = () => {
 
 
 
-getSessionList() {
+getSessionList(page?:number) {
+  if(page) {
+    this.currentpage = page
+   }
+   let data = {
+    createdOn: this.selectedDate,
+    user_name: this.selectedUserName
+   }
+   let filterStr = '';
+   for (let item in data) {
+      if(data[item]) {
+        filterStr = `${filterStr}${item}=${data[item]}&`
+      }
+      }
+   console.log(filterStr)
   this.ui.loader.show()
-  this.sessionService.getSessionList().subscribe((res) => {
+  this.sessionService.getSessionList(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
     if(res.data) {
-      this.sessionList = res.data.map((item) => ({
+      this.sessionList = res.data.result.map((item) => ({
            date: moment(item.createdOn).format('YYYY-MM-DD'),
            ...item
       }))
+      this.totalPage = res.data.total
     } 
     this.ui.loader.hide()
   },(err) => this.ui.loader.hide())
+}
+
+
+onOptionSelect(option, val) {
+  if(option === 'user') {
+    if(val === 'ALL') {
+      this.selectedUserName = ''
+     } else {
+       this.selectedUserName = val
+     }
+  } else if(option === 'date') {
+    this.selectedDate = val
+  }
+  this.getSessionList()
+}
+
+onLimitSelect = (val) => {
+  this.selectedPerPage = val
+  this.getSessionList()
 }
 
 

@@ -11,8 +11,8 @@ export class EmployeeService {
   constructor(private http: HttpClient) { }
 
 
-  getEmployeeList():Observable<any>{
-    return this.http.get(`${environment.apiURL}/users/view/all`);
+  getEmployeeList(perPage?:number,currentPage?:number):Observable<any>{
+    return this.http.get(`${environment.apiURL}/users/view/all?per_page=${perPage}&current_page=${currentPage}`);
   }
 
   addEmployee(data): Observable<any> {

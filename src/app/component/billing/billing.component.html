@@ -4,29 +4,41 @@
 
       <div class="container-fluid">
         <div class="row dash-tab">
-          <div class="col-sm-12">
+          <div class="col-md-6 col-sm-12">
             <div class="form-group">
                <h4>TOTAL SALES : &#x20B9; <span style="color:#69d73d">{{total}}.00</span></h4>
             </div>
           </div>
+          <div class="offset-md-3 col-sm-12 col-md-3 ">
+            <div class="form-group">
+              SELECT PER PAGE
+              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+             </div>
+          </div> 
           <div class="col-sm-2 cus-srch ">
             <div class="form-group">
               PAYMENT OPTION
-              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPaymentMode" (change)="payMode($event.target.value)">
-                <option value="All">CLEAR SEARCH</option>
+              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPaymentMode" (change)="onOptionSelect('payment',$event.target.value)">
+                <option value="">All</option>
                 <option value="Cash">Cash</option>
                 <option value="Paytm">Paytm</option>
                 <option value="Card">Card</option>
                 <option value="GooglePay">GooglePay</option>
                 <option value="PhonePe">PhonePe</option>
+                <option value="Net Banking">Net Banking</option>
               </select>
              </div>
           </div> 
           <div class="col-sm-2 cus-srch ">
             <div class="form-group">
               BILL TYPE
-              <select name="dev" class="form-control pl-0" id="dev" [(ngModel)]="selectedDeliveryMode" (change)="deliveryMode($event.target.value)">
-                <option value="All">CLEAR SEARCH</option>
+              <select name="dev" class="form-control pl-0" id="dev" [(ngModel)]="selectedDeliveryMode" (change)="onOptionSelect('delivery',$event.target.value)">
+                <option value="">All</option>
                 <option value="Home Delivery">Home Delivery</option>
                 <option value="Parcel">Parcel</option>
                 <option value="Dine-in">Dine-in</option>
@@ -38,7 +50,7 @@
           <div class="col-sm-2 cus-srch ">
             <div class="form-group">
               BILL BY
-              <select name="cars" class="form-control pl-0" id="cars" [(ngModel)]="selectedUserName" (change)="onUserSelect($event.target.value)">
+              <select name="cars" class="form-control pl-0" id="cars" [(ngModel)]="selectedUserName" (change)="onOptionSelect('user',$event.target.value)">
                 <ng-container *ngFor="let item of userNameList">
                   <option [value]="item.fullName">{{item.fullName}}</option>
                 </ng-container>
@@ -48,7 +60,7 @@
             <div class="col-sm-3 cus-srch">
               <div class="form-group">
                  SEARCH BY DATE
-                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="changedDate($event.target.value)">
+                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
                 
               </div>
             </div> 
@@ -74,22 +86,32 @@
                         <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th>
                         <th scope="col">Customer <a href = 'javascript:void(0)' (click)="changeOrder('customer_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.customer_name" [class.fa-caret-up]="!sortFields.customer_name"></i></a></th>
                         <th scope="col">Phone</th>
+                        <th scope="col">Alternative Phone</th>
                         <th scope="col">Address</th>
                         <th scope="col">Bill Date </th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">In Cook Slot At</th>
+                        <th scope="col">Cooked At </th>
+                        <th scope="col">Delivered At </th>
                         <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
                     <tbody *ngIf='billList?.length; else elseBlock'>
-                      <tr *ngFor = "let item of billList | filter: 'customer_name': searchName | filter: 'payment_mode': selectedPaymentMode | filter: 'delivery_mode': selectedDeliveryMode | filter: 'user_name' : selectedUserName | filter: 'date': selectedDate; let i=index;">
+                      <tr *ngFor = "let item of billList | filter: 'customer_name': searchName |paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: totalPage};  index as i;">
                         <td><B>{{item.bill_id}}</B></td>
                         <td>&#x20B9; {{item.total_price}}</td>
                         <td>{{item.payment_mode}}</td>
                         <td>{{item.delivery_mode}}</td>
                         <td>{{item.customer_name}}</td>
                         <td>{{item.customer_phone}}</td>
+                        <td>{{item.customer_alternative_phone}}</td>
                         <td>{{item.customer_address}}</td>
-                        <td>{{item.createdOn | date:'MMM d, y, h:mm:ss a'}}</td>
+                        <td>{{item.createdOn | date:'MMM d, y'}}</td>
+                        <td>{{item.createdOn | date:'h:mm:ss a'}}</td>
+                        <td>{{item.incookAt | date:'h:mm:ss a'}}</td>
+                        <td>{{item.cookedAt | date:'h:mm:ss a'}}</td>
+                        <td>{{item.dispatchedAt | date:'h:mm:ss a'}}</td>
                         <td>{{item.user_name}}</td>
                         <td>
                           <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm" (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
@@ -104,6 +126,7 @@
                         </tbody>
                       </ng-template>
                   </table>
+                  <pagination-controls (pageChange)="getBillList($event)" style="text-align: center;"></pagination-controls>
                 </div>
                 </div>
                 
