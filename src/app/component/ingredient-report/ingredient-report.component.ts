@@ -59,8 +59,8 @@ totalPage: number;
       this.currentpage = page
      }
      let data = {
-      startDate: this.selectedStartDate,
-      endDate: this.selectedEndDate
+      startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
+      endDate:  moment(this.selectedEndDate).format('DD-MM-YYYY')
      }
      let filterStr = '';
      for (let item in data) {
@@ -124,8 +124,8 @@ totalPage: number;
         timer: 1500
       })
     } else {
-      this.selectedStartDate = moment(this.selectedStartDate).format('DD-MM-YYYY')
-      this.selectedEndDate = moment(this.selectedEndDate).format('DD-MM-YYYY')
+      // this.selectedStartDate = moment(this.selectedStartDate).format('DD-MM-YYYY')
+      // this.selectedEndDate = moment(this.selectedEndDate).format('DD-MM-YYYY')
       this.getAllReport()
     }
   }

@@ -23,7 +23,7 @@ export class BillingService {
    getBillDetail(id): Observable<any> {
      return this.http.get(`${environment.apiURL}/bill/${id}/getById`)
    }
-   getTotalSale(): Observable<any> {
-     return this.http.get(`${environment.apiURL}/bill/total`)
+   getTotalSale(paramObj?:any): Observable<any> {
+     return this.http.get(`${environment.apiURL}/bill/total?${paramObj}`)
    }
 }

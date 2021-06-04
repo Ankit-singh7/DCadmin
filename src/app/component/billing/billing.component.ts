@@ -56,6 +56,8 @@ export class BillingComponent implements OnInit {
 
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
+  selectedStartDate: any;
+  selectedEndDate: any;
 
 
   constructor(private router: Router,
@@ -94,9 +96,31 @@ export class BillingComponent implements OnInit {
   }
 
   getTotalSales = () => {
-    this.billService.getTotalSale().subscribe((res) => {
+    this.total = 0
+    let data = {
+      startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
+      endDate: moment(this.selectedEndDate).format('DD-MM-YYYY'),
+      payment_mode: this.selectedPaymentMode,
+      delivery_mode: this.selectedDeliveryMode,
+      createdOn: this.selectedDate,
+      bill_by: this.selectedUserName
+     }
+     let filterStr = '';
+     for (let item in data) {
+        if(data[item]) {
+          filterStr = `${filterStr}${item}=${data[item]}&`
+        }
+        }
+     console.log(filterStr)
+    this.billService.getTotalSale(filterStr).subscribe((res) => {
       if(res.data) {
-        this.total = res.data[0].total;
+        let totalArr = res.data;
+        this.total = 0
+
+        for(let i of totalArr) {
+          this.total = this.total + i.total
+        }
+        console.log(this.total);
       } else {
         this.total = 0;
       }
@@ -106,10 +130,13 @@ export class BillingComponent implements OnInit {
 
 
   getBillList(page?:number) {
+    
     if(page) {
       this.currentpage = page
      }
     let data = {
+      startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
+      endDate: moment(this.selectedEndDate).format('DD-MM-YYYY'),
       payment_mode: this.selectedPaymentMode,
       delivery_mode: this.selectedDeliveryMode,
       createdOn: this.selectedDate,
@@ -124,6 +151,7 @@ export class BillingComponent implements OnInit {
      console.log(filterStr)
     this.ui.loader.show()
     this.billService.getBillingList(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
+      this.billList = [];
       if(res.data) {
         this.billList = res.data.result.map((item) => ({
              date: moment(item.createdOn).format('YYYY-MM-DD'),
@@ -152,6 +180,43 @@ export class BillingComponent implements OnInit {
         this.selectedDate = val
       }
       this.getBillList()
+      this.getTotalSales()
+  }
+
+  onDateSelect(){
+    if(!this.selectedStartDate) {
+      swal.fire({
+        icon: 'warning',
+        title: 'Please Select Start Date',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    } else if(!this.selectedEndDate) {
+      swal.fire({
+        icon: 'warning',
+        title: 'Please Select End Date',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    } else {
+      this.getBillList()
+      this.getTotalSales()
+    }
+  }
+
+
+
+
+
+  changedDate(date,val) {
+    if(date === 'start'){
+      this.selectedStartDate = val
+
+    } else if(date === 'end') {
+      this.selectedEndDate = val
+    }
+    console.log(this.selectedStartDate)
+    console.log(this.selectedEndDate)
   }
 
 
@@ -246,9 +311,6 @@ export class BillingComponent implements OnInit {
     }
   }
 
-  changedDate(e) {
-    console.log(e)
-  }
 
 
 

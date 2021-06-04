@@ -4,29 +4,18 @@
 
       <div class="container-fluid">
         <div class="row dash-tab">
-          <div class="col-md-6 col-sm-12">
+          <div class="col-md-4 col-sm-12">
             <div class="form-group">
                <h4>TOTAL SALES : &#x20B9; <span style="color:#69d73d">{{total}}.00</span></h4>
             </div>
           </div>
-          <div class="offset-md-3 col-sm-12 col-md-3 ">
-            <div class="form-group">
-              SELECT PER PAGE
-              <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-             </div>
-          </div> 
           <div class="col-sm-2 cus-srch ">
             <div class="form-group">
               PAYMENT OPTION
               <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPaymentMode" (change)="onOptionSelect('payment',$event.target.value)">
                 <option value="">All</option>
                 <option value="Cash">Cash</option>
-                <option value="Paytm">Paytm</option>
+                <option value="PayTm">PayTm</option>
                 <option value="Card">Card</option>
                 <option value="GooglePay">GooglePay</option>
                 <option value="PhonePe">PhonePe</option>
@@ -41,7 +30,7 @@
                 <option value="">All</option>
                 <option value="Home Delivery">Home Delivery</option>
                 <option value="Parcel">Parcel</option>
-                <option value="Dine-in">Dine-in</option>
+                <option value="Dine-In">Dine-In</option>
                 <option value="Swiggy">Swiggy</option>
                 <option value="Zomato">Zomato</option>
               </select>
@@ -56,8 +45,35 @@
                 </ng-container>
               </select>
              </div>
+          </div>
+          <div class="col-sm-2 cus-srch">
+            <div class="form-group">
+               SEARCH BY NAME
+              <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchName" name="searchName">
+              
+            </div>
+          </div>  
+          <div class="col-sm-3 cus-srch">
+            <div class="form-group">
+               FROM DATE
+              <input type="date" class="form-control pl-0" id="birthday1" placeholder="From Date" [(ngModel)]="selectedStartDate" name="selectedSDate" (change)="changedDate('start',$event.target.value)">
+              
+            </div>
           </div> 
-            <div class="col-sm-3 cus-srch">
+        <div class="col-sm-3 cus-srch">
+          <div class="form-group">
+             TO DATE
+            <input type="date" class="form-control pl-0" id="birthday2" placeholder="To Date" [(ngModel)]="selectedEndDate" name="selectedEDate" (change)="changedDate('end',$event.target.value)">
+            
+          </div>
+        </div> 
+        <div class="col-sm-3">
+            <div class="form-group mt-3">
+              <button class="shortcut-btn w-100" (click)="onDateSelect()"><b>SEARCH</b></button>
+            </div>
+          </div>
+     
+            <!-- <div class="col-sm-3 cus-srch">
               <div class="form-group">
                  SEARCH BY DATE
                 <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
@@ -66,11 +82,28 @@
             </div> 
             <div class="col-sm-3 cus-srch">
               <div class="form-group">
-                 SEARCH BY NAME
-                <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cutomer Name" [(ngModel)]="searchName" name="searchName">
+                 SEARCH BY DATE
+                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
                 
               </div>
             </div> 
+            <div class="col-sm-3">
+              <div class="form-group">
+                <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>SEARCH</b></button>
+              </div>
+            </div> -->
+            <div class="col-sm-12 col-md-3 ">
+              <div class="form-group">
+                SELECT PER PAGE
+                <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+               </div>
+            </div> 
+
        
 
             
