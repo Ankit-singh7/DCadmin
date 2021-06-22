@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BillingRoutingModule } from './billing-routing.module';
 import { BillingComponent } from './billing.component';
 import { SharedModule } from '../shared/shared.module';
@@ -15,6 +15,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     BillingRoutingModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,

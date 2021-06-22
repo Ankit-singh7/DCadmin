@@ -5,6 +5,13 @@ import swal from 'sweetalert2';
 import * as moment from 'moment';
 import { BillingService } from 'src/app/service/billing/billing.service';
 import { UserService } from 'src/app/service/user/user.service';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {debounceTime} from 'rxjs/operators';
+import {pipe} from 'rxjs'
+import { switchMap } from 'rxjs/operators';
+import { ModeService } from 'src/app/service/mode/mode.service';
+
+
 
 
 @Component({
@@ -29,6 +36,9 @@ export class BillingComponent implements OnInit {
     user_name:true,
     createdOn: true
   };
+  public payment = [];
+  public delivery = [];
+  // const debouncetime = pipe(debounceTime(1000));
   
 
 
@@ -58,17 +68,74 @@ export class BillingComponent implements OnInit {
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   selectedStartDate: any;
   selectedEndDate: any;
+  searchField: FormControl;
+  searchForm: FormGroup;
 
 
   constructor(private router: Router,
               private billService: BillingService,
               private userService: UserService,
-              private ui: LoaderService ) { }
+              private modeService: ModeService,
+              private fb:FormBuilder,
+              private ui: LoaderService ) { 
+                // this.searchField = new FormControl();
+                // this.searchForm = fb.group({search: this.searchField});
+                // this.searchField.valueChanges
+                // .pipe(
+                //   this.debouncetime,
+                //   )
+                //   .switchMap(term => this.billService.getBillingList(term)
+                //   .subscribe((res) => {
+                //     this.billList = [];
+                //     if(res.data) {
+                //       this.billList = res.data.result.map((item) => ({
+                //            date: moment(item.createdOn).format('YYYY-MM-DD'),
+                //            ...item
+                //       }))
+              
+                //       this.totalPage = res.data.total
+                //     } 
+                //   })
+              }
 
   ngOnInit(): void {
     this.getBillList()
     this.getAllUsers()
     this.getTotalSales()
+    this.getAllPaymentMode()
+    this.getAllDeliveryMode()
+  }
+
+
+
+
+  getAllPaymentMode = () => {
+    this.modeService.getPaymentModeList().subscribe((res) => {
+      if(res.data) {
+        this.payment.push({id:'Net Banking', name: 'Net Banking'})
+        let tempArr = res.data.map((item) => ({
+           id: item.payment_mode_name,
+           name: item.payment_mode_name
+        }))
+        this.payment = [...tempArr, ...this.payment]
+        this.payment.push({id:'',name:'All'})
+        
+      } 
+    })
+  }
+
+
+
+  getAllDeliveryMode = () => {
+    this.modeService.getDeliveryModeList().subscribe((res) => {
+      if(res.data) {
+        this.delivery = res.data.map((item) => ({
+           id: item.delivery_mode_name,
+           name: item.delivery_mode_name
+        }))
+        this.delivery.push({id:'',name:'All'})
+      } 
+    })
   }
 
 
@@ -259,6 +326,7 @@ export class BillingComponent implements OnInit {
             timer: 1500
           })
          this.billList.splice(index,1)
+         this.getTotalSales()
           this.ui.loader.hide()
         }, err => this.ui.loader.hide())
       } else if (result.isDenied) {

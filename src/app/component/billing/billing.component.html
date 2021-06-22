@@ -13,13 +13,9 @@
             <div class="form-group">
               PAYMENT OPTION
               <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPaymentMode" (change)="onOptionSelect('payment',$event.target.value)">
-                <option value="">All</option>
-                <option value="Cash">Cash</option>
-                <option value="PayTm">PayTm</option>
-                <option value="Card">Card</option>
-                <option value="GooglePay">GooglePay</option>
-                <option value="PhonePe">PhonePe</option>
-                <option value="Net Banking">Net Banking</option>
+                <ng-container *ngFor="let item of payment">
+                  <option [value]="item.id">{{item.name}}</option>
+                </ng-container>
               </select>
              </div>
           </div> 
@@ -27,12 +23,9 @@
             <div class="form-group">
               BILL TYPE
               <select name="dev" class="form-control pl-0" id="dev" [(ngModel)]="selectedDeliveryMode" (change)="onOptionSelect('delivery',$event.target.value)">
-                <option value="">All</option>
-                <option value="Home Delivery">Home Delivery</option>
-                <option value="Parcel">Parcel</option>
-                <option value="Dine-In">Dine-In</option>
-                <option value="Swiggy">Swiggy</option>
-                <option value="Zomato">Zomato</option>
+                <ng-container *ngFor="let item of delivery">
+                  <option [value]="item.id">{{item.name}}</option>
+                </ng-container>
               </select>
              </div>
           </div> 
@@ -49,8 +42,8 @@
           <div class="col-sm-2 cus-srch">
             <div class="form-group">
                SEARCH BY NAME
-              <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchName" name="searchName">
-              
+              <!-- <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchName" name="searchName"> -->
+              <form [formGroup]="searchForm"><input type="text" formControlName="search"  class="form-control pl-0" placeholder="Search By Cus Name"></form>
             </div>
           </div>  
           <div class="col-sm-3 cus-srch">

@@ -48,6 +48,15 @@ export class HeaderComponent {
          if(this.activatedRoute === '/user/report') {
           this.title = 'INGREDIENT REPORT'
          }
+         if(this.activatedRoute === '/user/sales-report') {
+          this.title = 'SALES REPORT'
+         }
+         if(this.activatedRoute === '/user/payment') {
+          this.title = 'PAYMENT MODE LIST'
+         }
+         if(this.activatedRoute === '/user/delivery') {
+          this.title = 'DELIVERY MODE LIST'
+         }
          if(this.activatedRoute === '/user/sm') {
           this.title = 'STOCK MANAGER LIST'
          }

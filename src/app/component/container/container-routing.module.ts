@@ -47,6 +47,18 @@ const routes: Routes = [
       loadChildren: () => import('../../../app/component/ingredient-report/ingredient-report.module').then( m => m.IngredientReportModule)
     },
     {
+      path:'sales-report',
+      loadChildren: () => import('../../../app/component/sales-report/sales-report.module').then( m => m.SalesReportModule)
+    },
+    {
+      path:'payment',
+      loadChildren: () => import('../../../app/component/payment-mode/payment-mode.module').then( m => m.PaymentModeModule)
+    },
+    {
+      path:'delivery',
+      loadChildren: () => import('../../../app/component/delivery-mode/delivery-mode.module').then( m => m.DeliveryModeModule)
+    },
+    {
       path: 'sm',
       loadChildren: () => import('../../../app/component/stock-manager/stock-manager.module').then( m => m.StockManagerModule)
     },

@@ -10,13 +10,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './component/shared/shared.module';
-import { ChangePasswordComponent } from './component/change-password/change-password.component';
+
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CommonModule,
