@@ -23,6 +23,7 @@ public sortOrder = false;
 public sortFields = {
   user_name:true,
   session_amount: true,
+  drawer_balance:true,
   withdrawn: true
 };
 
@@ -88,9 +89,26 @@ getAllUsers() {
 }
 
 getTotalSales = () => {
-  this.billService.getTotalSale().subscribe((res) => {
+  let data = {
+    startDate:  moment(new Date()).format('DD-MM-YYYY'),
+    endDate: moment(new Date()).format('DD-MM-YYYY'),
+   }
+   let filterStr = '';
+   for (let item in data) {
+      if(data[item]) {
+        filterStr = `${filterStr}${item}=${data[item]}&`
+      }
+      }
+   console.log(filterStr)
+   this.billService.getTotalSale(filterStr).subscribe((res) => {
     if(res.data) {
-      this.total = res.data[0].total;
+      let totalArr = res.data;
+      this.total = 0
+
+      for(let i of totalArr) {
+        this.total = this.total + i.total
+      }
+      console.log(this.total);
     } else {
       this.total = 0;
     }
@@ -153,7 +171,7 @@ public changeOrder(field) {
   this.field = field;
   this.sortFields[field] = this.sortOrder;
   this.sessionList.sort((a, b) => {
-    if (field === 'withdrawn' || field === 'session_amount') {
+    if (field === 'withdrawn' || field === 'session_amount' || field === 'drawer_balance') {
       return !this.sortOrder ? a[field] - b[field] : b[field] - a[field];
     } else {
       return !this.sortOrder ? a[field].localeCompare(b[field]) : b[field].localeCompare(a[field]);

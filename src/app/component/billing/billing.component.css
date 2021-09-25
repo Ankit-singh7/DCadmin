@@ -21,3 +21,14 @@ div.scrollmenu {
     text-decoration: none;
   }
   
+  @media print {
+    /* Hide every other element  */
+    .main-container {
+      visibility: hidden;
+    }
+
+    /* Then displaying print container elements */
+    .print-container {
+      visibility: visible;
+    }
+  }

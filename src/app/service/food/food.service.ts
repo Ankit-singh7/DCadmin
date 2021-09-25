@@ -167,8 +167,8 @@ export class FoodService {
 
 
   // Sales Report api
-  getAllSalesReport = (perPage?:number,currentPage?:number,paramObj?:any):Observable<any> => {
-    return this.http.get(`${environment.apiURL}/sales-report/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
+  getAllSalesReport = (paramObj?:any):Observable<any> => {
+    return this.http.get(`${environment.apiURL}/sales-report/view/all?${paramObj}`)
   }
 
   // Stock Api

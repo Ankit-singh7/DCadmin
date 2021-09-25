@@ -2,7 +2,7 @@
     <!-- Page Content  -->
 
 
-      <div class="container-fluid">
+      <div class="container-fluid main-container">
         <div class="row dash-tab">
           <div class="col-md-4 col-sm-12">
             <div class="form-group">
@@ -42,8 +42,7 @@
           <div class="col-sm-2 cus-srch">
             <div class="form-group">
                SEARCH BY NAME
-              <!-- <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchName" name="searchName"> -->
-              <form [formGroup]="searchForm"><input type="text" formControlName="search"  class="form-control pl-0" placeholder="Search By Cus Name"></form>
+              <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchedName" name="searchName" (ngModelChange)="onCustomerChange()">
             </div>
           </div>  
           <div class="col-sm-3 cus-srch">
@@ -106,6 +105,10 @@
                   <table class="table details_table ">
                     <thead>
                       <tr>
+                        <ng-container *ngIf="role === 'operator'">
+
+                          <th scope="col">Action</th>
+                        </ng-container>
                         <th scope="col">Bill ID</th>
                         <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
                         <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
@@ -120,11 +123,31 @@
                         <th scope="col">Cooked At </th>
                         <th scope="col">Delivered At </th>
                         <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
-                        <th scope="col">Action</th>
+                        <ng-container  *ngIf="role === 'admin'">
+
+                          <th scope="col">View</th>
+                        </ng-container>
+                        <ng-container *ngIf="role === 'admin'">
+
+                          <th scope="col">Action</th>
+                        </ng-container>
                       </tr>
                     </thead>
                     <tbody *ngIf='billList?.length; else elseBlock'>
-                      <tr *ngFor = "let item of billList | filter: 'customer_name': searchName |paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: totalPage};  index as i;">
+                      <tr *ngFor = "let item of billList  |paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: totalPage};  index as i;">
+                        <ng-container *ngIf="role === 'operator'">
+                          <ng-container *ngIf="item?.printed === 'No'; else yesBlock">
+                            
+                            <td>
+                              <button type="button" style="margin-left:4px" class="btn btn-success btn-sm"  (click)="printBill(item)"><i class="fa fa-print"></i></button>
+                            </td>
+                          </ng-container>
+                          <ng-template #yesBlock>
+                            <td>
+                              <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"  (click)="printBill(item)"><i class="fa fa-print"></i></button>
+                            </td>
+                          </ng-template>
+                         </ng-container>
                         <td><B>{{item.bill_id}}</B></td>
                         <td>&#x20B9; {{item.total_price}}</td>
                         <td>{{item.payment_mode}}</td>
@@ -139,9 +162,17 @@
                         <td>{{item.cookedAt | date:'h:mm:ss a'}}</td>
                         <td>{{item.dispatchedAt | date:'h:mm:ss a'}}</td>
                         <td>{{item.user_name}}</td>
-                        <td>
-                          <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm" (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
-                        </td>
+                        <ng-container *ngIf="role === 'admin'">
+                          <td>
+                            <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
+                          </td>
+                        </ng-container>
+                        <ng-container  *ngIf="role === 'admin'">
+                          <td>
+                            <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"  (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
+                          </td>
+                       </ng-container>
+             
                       </tr>
                      </tbody>
                       <ng-template #elseBlock>
@@ -164,65 +195,108 @@
 
 
 <!-- Edit Employee Modal -->
-    <div id="addWaiter7" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeEditModal>
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="padding:2%">
-          <form id="subform2" role="form" #subForm2="ngForm" *ngIf="detail">
+    <div id="viewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" #viewModal>
+      <div class="modal-dialog">
+        <div class="modal-content" style="padding:2%" *ngIf="detail">
             <div class="row">
-              <div class="col-12">
-                <h5>Edit Billing Detail</h5>
+              <div class="col-6">
+                <h5>Billing Detail</h5>
               </div>
-              <div class="offset-md-1 col-sm-12 col-md-5">
-                <div class=" form-group position-relative">
-                  <input type="text" class="form-control mb-4" placeholder="First Name" name="fname1"
-                    [(ngModel)]="detail.firstName" required />
-                    {{detail.firstName}}
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-5">
-                <div class="form-group position-relative">
-                <input type="text" class="form-control mb-4" placeholder="Last Name" name="lname1"
-                [(ngModel)]="detail.lastName" required />
+              <div class="col-sm-6">
+                <p>Date: <span style="font-weight: bold;">{{detail.date}}</span></p>
+               </div> 
+              <div class="col-sm-6">
+               <p>Name: <span style="font-weight: bold;">{{detail.customer_name?detail.customer_name:'Not Mentioned'}}</span></p>
+              </div> 
+              <div class="col-sm-6">
+                <p>Bill ID: <span style="font-weight: bold;">{{detail.bill_id?detail.bill_id:'Not Mentioned'}}</span></p>
+               </div>   
+              <div class="col-sm-6">
+                <p>Phone No: <span style="font-weight: bold;">{{detail.customer_alternative_phone?detail.customer_alternative_phone:'Not Mentioned'}}</span></p>
                </div>  
+               <div class="col-sm-6">
+                <p>Whatsapp No: <span style="font-weight: bold;">{{detail.customer_phone?detail.customer_phone:'Not Mentioned'}}</span></p>
+               </div>
+               <div class="col-sm-12">
+                <p>Address: <span style="font-weight: bold;">{{detail.customer_address?detail.customer_address:'Not Mentioned'}}</span></p>
+               </div>
+               <div class="col-sm-6">
+                <p>Delivery Mode: <span style="font-weight: bold;">{{detail.delivery_mode?detail.delivery_mode:'Not Mentioned'}}</span></p>
+               </div>
+               <div class="col-sm-6">
+                <p>Payment Mode: <span style="font-weight: bold;">{{detail.payment_mode?detail.payment_mode:'Not Mentioned'}}</span></p>
+               </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                 <h5 style="text-align:center">Food Details</h5>
               </div>
-              </div>
-              <div class="row">
-                <div class="offset-md-1 col-sm-12 col-md-5">
-                  <div class="form-group position-relative">
-                  <input type="text" class="form-control mb-4" placeholder="Email" name="em"
-                  [(ngModel)]="detail.email" autocomplete="new-password" required />
-                 </div>  
-                </div>
-                <div class="col-sm-12 col-md-5">
-                  <div class="form-group position-relative">
-                  <input type="text" class="form-control mb-4" placeholder="Phone" name="phe"
-                  [(ngModel)]="detail.mobileNumber" autocomplete="new-password" required />
-                 </div>  
-                </div>
-              </div>
-              <div class="row">
-                <div class="offset-md-4 col-sm-12 col-md-4">
-                  <div class="form-group position-relative">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Status</label>
-                      </div>
-                      <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="detail.status" name="stat2" (change)="editStatus($event.target.value)">
-                        <option value="Active" [selected]="detail.status === 'Active'">Active</option>
-                        <option value="Inactive" [selected]="detail.status === 'Inactive'">Inactive</option>
-                      </select>
-                    </div>
-                 </div>  
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12" style="text-align: center;">
-                  <button type="button" class="btn btn-success" [disabled]="!subForm2.valid" (click)="editBill(detail.userId)">EDIT</button>
-                </div>
-              </div>
-          </form>
-  
+              <ng-container *ngFor="let item of detail.products">
+               <div class="col-sm-6">
+                 <p><span style="font-weight: bold;"><span style="color:red">{{item.quantity}}</span> X {{item.food_name| titlecase}}</span></p>
+               </div>
+              </ng-container>
             </div>
         </div>
       </div>
+
+
+
+
+        <div  id="print-section">
+          <div class="ticket">
+            <p class="centered last-line">LOVE &#10084;&#65039; DESI CHINESE
+                <br>140, B.T Road, Dunlop Supermarket, Block-C, Ground Floor Kolkata-
+                <br>700108(Near Sonali Cinema)
+                <br><B>All Days Open 12:00pm to 11:00pm</B>
+                <br>lovedesichinese@gmail.com
+                <br><B>7044444089</B>
+
+              </p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>No:</B> {{printDetail?.bill_id}}</p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Name:</B> {{printDetail?.customer_name?printDetail?.customer_name:''}}</p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Phone:</B> {{printDetail?.customer_phone?printDetail?.customer_phone:''}}</p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Alternate Phone:</B> {{printDetail?.customer_alternative_phone?printDetail?.customer_alternative_phone:''}}</p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Address:</B> {{printDetail?.customer_address?printDetail?.customer_address:''}}</p>
+              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Delivery Mode:</B> {{printDetail?.delivery_mode}}</p>
+              <p><B>Payment Mode:</B> {{printDetail?.payment_mode}}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="quantity" style="border:1px solid black">Q.</th>
+                        <th class="description" style="border:1px solid black">Item</th>
+                        <th class="price" style="border:1px solid black">Price</th>
+                        <th class="t-price" style="border:1px solid black">T. Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                  <ng-container *ngFor="let i of printDetail?.products">
+
+                    <tr>
+                        <td class="quantity" style="border:1px solid black; text-align: center;">{{i?.quantity}}</td>
+                        <td class="description" style="border:1px solid black;text-align: center;">{{i?.food_name}}</td>
+                        <td class="price" style="border:1px solid black;text-align: center;">&#x20B9; {{i?.price}}</td>
+                        <td class="t-price" style="border:1px solid black;text-align: center;">&#x20B9; {{i?.price * i?.quantity}}</td>
+                    </tr>
+                  </ng-container>
+                    <tr>
+                        <td class="quantity"></td>
+                        <td class="t-price"></td>
+                        <td class="total" style="text-align:center"><B>TOTAL</B></td>
+                        <td class="t-price" style="text-align:center"><B>&#x20B9; {{printDetail?.total_price}}</B></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-bottom:-7px;"># Product once sold will not be taken back.</p>
+            <p style="margin-bottom:-7px;"># Money will not be refunded under any circumstaces.</p>
+            <p># All Services and products are governed under GST guidlines.</p>
+                <p class="centered"><B>Thank You Visit Again.</B></p>
+        </div> 
+        </div>
+
+
+      
+
+
   

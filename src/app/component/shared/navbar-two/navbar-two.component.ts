@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user/user.service';
 declare var $;
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  selector: 'app-navbar-two',
+  templateUrl: './navbar-two.component.html',
+  styleUrls: ['./navbar-two.component.css']
 })
-export class NavbarComponent implements OnInit, AfterViewInit {
+export class NavbarTwoComponent implements OnInit, AfterViewInit {
 
   public groupId: string;
   public role = '';

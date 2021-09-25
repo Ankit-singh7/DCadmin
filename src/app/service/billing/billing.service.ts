@@ -18,7 +18,7 @@ export class BillingService {
      return this.http.get(`${environment.apiURL}/bill/${id}/delete`)
    }
    editBill(id,data): Observable<any> {
-     return this.http.put(`${environment.apiURL}/bill/${id}/update`,data)
+     return this.http.post(`${environment.apiURL}/bill/${id}/update`,data)
    }
    getBillDetail(id): Observable<any> {
      return this.http.get(`${environment.apiURL}/bill/${id}/getById`)

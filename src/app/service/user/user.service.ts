@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment'
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -8,7 +8,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+
+  public role =  new BehaviorSubject(null);
+
+
+  constructor(private http: HttpClient) { 
+    this.role.next(localStorage.getItem('role'))
+  }
+  
 
   public login(data): Observable<any> {
     return this.http.post(`${environment.apiURL}/admin/login`, data);
@@ -20,6 +27,16 @@ export class UserService {
 
   public getAllUsers(perPage?:number,currentPage?:number): Observable<any> {
     return this.http.get(`${environment.apiURL}/users/view/all?per_page=${perPage}&current_page=${currentPage}`)
+  }
+
+
+  setRole(val) {
+    localStorage.setItem('role', val);
+    this.role.next(val);
+  }
+  
+  getRole(){
+    return this.role.asObservable();
   }
 
 

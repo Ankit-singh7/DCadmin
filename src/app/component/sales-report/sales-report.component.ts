@@ -51,10 +51,8 @@ totalPage: number;
 
   
   
-  getAllReport(page?:number) {
-    if(page) {
-      this.currentpage = page
-     }
+  getAllReport() {
+   
      let data = {
       startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
       endDate:  moment(this.selectedEndDate).format('DD-MM-YYYY')
@@ -66,10 +64,10 @@ totalPage: number;
         }
         }
     this.ui.loader.show()
-    this.foodService.getAllSalesReport(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
+    this.foodService.getAllSalesReport(filterStr).subscribe((res) => {
       this.reportList = [];
       if(res.data) {
-        let arr1 = JSON.parse(JSON.stringify(res.data.result))
+        let arr1 = JSON.parse(JSON.stringify(res.data))
         let keyArr = arr1.map((i) => i.ingredient_id)
         console.log(keyArr)
        for(let i = 0; i< arr1.length;i++) {
@@ -91,7 +89,7 @@ totalPage: number;
            this.reportList.push(tempArr[0])
          }
        }
-       this.totalPage = this.reportList.length;
+      //  this.totalPage = this.reportList.length;
 
      console.log(this.reportList)
 

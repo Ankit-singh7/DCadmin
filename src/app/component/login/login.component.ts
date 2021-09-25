@@ -36,17 +36,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-
     this.ui.loader.show()
     const data = {
       email:this.email,
       password: this.password,
       }
         this.userService.login(data).subscribe((res) => {
+          this.userService.setRole(res.data.role)         
           this.loginError =  false;
           localStorage.setItem('token', res.data.authToken);
           localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('name',`${res.data.firstName} ${res.data.lastName}`)          
+          localStorage.setItem('name',`${res.data.firstName} ${res.data.lastName}`) 
           if (this.rememberMe) {
             localStorage.setItem('email', this.email);
             localStorage.setItem('password', this.password);
@@ -59,7 +59,31 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('rememberMe', String(this.rememberMe));
           }
 
-          this.router.navigate(['/user/employee'])
+
+          this.userService.getRole().subscribe((res) => {
+            console.log(res)
+            if(res === 'admin') {
+              this.router.navigate(['/user/employee'])
+              window.location.reload()
+            } else if(res === 'operator') {
+              this.router.navigate(['/user/billing'])
+              window.location.reload()
+            }
+          })
+
+          // if(res.data.role === 'admin') {
+          //   setTimeout(() => {
+
+          //     this.router.navigate(['/user/employee'])
+          //   },1000)
+            
+          // } else if(res.data.role === 'operator') {
+          //   setTimeout(() => {
+
+          //     this.router.navigate(['/user/billing'])
+          //   },1000)
+          // }
+
            this.ui.loader.hide()
         
       },(error) => {

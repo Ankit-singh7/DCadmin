@@ -1,5 +1,13 @@
 <div class="wrapper">
-    <app-navbar></app-navbar>
+    <ng-container *ngIf="role === 'operator'">
+        <app-navbar-two></app-navbar-two>
+
+    </ng-container>
+    <ng-container *ngIf="role === 'admin'">
+
+        <app-navbar></app-navbar>
+    </ng-container>
+
     <div id="content">
         <app-header></app-header>
         <router-outlet></router-outlet>

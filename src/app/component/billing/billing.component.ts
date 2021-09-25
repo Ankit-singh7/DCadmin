@@ -6,9 +6,9 @@ import * as moment from 'moment';
 import { BillingService } from 'src/app/service/billing/billing.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {debounceTime} from 'rxjs/operators';
-import {pipe} from 'rxjs'
-import { switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { fromEvent } from 'rxjs';
+import { map, switchMap, filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ModeService } from 'src/app/service/mode/mode.service';
 
 
@@ -54,22 +54,22 @@ export class BillingComponent implements OnInit {
   public selectedPaymentMode:any;
   public selectedDeliveryMode:any;
   public selectedUserName:any;
-  public searchName = '';
+  public searchedName = '';
   public selectedDate = '';
   public userNameList:any = [];
   public total: any;
+  public printDetail;
 
 
   selectedPerPage = 10;
   currentpage: number = 1;
   totalPage: number;
+  role = '';
 
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   selectedStartDate: any;
   selectedEndDate: any;
-  searchField: FormControl;
-  searchForm: FormGroup;
 
 
   constructor(private router: Router,
@@ -77,25 +77,11 @@ export class BillingComponent implements OnInit {
               private userService: UserService,
               private modeService: ModeService,
               private fb:FormBuilder,
-              private ui: LoaderService ) { 
-                // this.searchField = new FormControl();
-                // this.searchForm = fb.group({search: this.searchField});
-                // this.searchField.valueChanges
-                // .pipe(
-                //   this.debouncetime,
-                //   )
-                //   .switchMap(term => this.billService.getBillingList(term)
-                //   .subscribe((res) => {
-                //     this.billList = [];
-                //     if(res.data) {
-                //       this.billList = res.data.result.map((item) => ({
-                //            date: moment(item.createdOn).format('YYYY-MM-DD'),
-                //            ...item
-                //       }))
-              
-                //       this.totalPage = res.data.total
-                //     } 
-                //   })
+              private ui: LoaderService ) {
+                this.userService.getRole().subscribe((res) =>{
+                  this.role = res
+                  console.log(res)
+                }) 
               }
 
   ngOnInit(): void {
@@ -104,6 +90,97 @@ export class BillingComponent implements OnInit {
     this.getTotalSales()
     this.getAllPaymentMode()
     this.getAllDeliveryMode()
+  }
+
+
+  onCustomerChange(){
+   console.log(this.searchedName)
+  }
+
+  printBill(item){
+    this.printDetail = item
+    setTimeout(() => {
+      
+      let printContents, popupWin;
+      printContents = document.getElementById('print-section').innerHTML;
+      popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+      popupWin.document.open();
+      popupWin.document.write(`
+        <html>
+          <head>
+  
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Print tab</title>
+            <style>
+            p{
+              font-size:10px;
+            }
+            
+            td,
+            th,
+            tr,
+            table {
+                font-size:10px;
+                border-top: 1px solid black;
+                border-collapse: collapse;
+            }
+            
+            td.description,
+            th.description {
+                width: 80px;
+                max-width: 80px;
+            }
+
+            td.total,
+            th.total {
+                width: 80px;
+                max-width: 80px;
+            }
+            
+            td.quantity,
+            th.quantity {
+                width: 40px;
+                max-width: 40px;
+                word-break: break-all;
+            }
+            
+            td.price,
+            th.price {
+                width: 40px;
+                max-width: 40px;
+                word-break: break-all;
+            }
+
+            td.t-price,
+            th.t-price {
+                width: 60px;
+                max-width: 60px;
+                word-break: break-all;
+            }
+            
+            .centered {
+                text-align: center;
+                align-content: center;
+            }
+            
+            .ticket {
+                width: 220px;
+                max-width: 220px;
+            }
+            
+            </style>
+          </head>
+      <body onload="window.print();window.close()">${printContents}</body>
+        </html>`
+      );
+      popupWin.document.close();
+    },100)
+    item.printed = 'Yes'
+    this.billService.editBill(item.bill_id,item).subscribe((res) => {
+    })
+
   }
 
 
@@ -207,7 +284,8 @@ export class BillingComponent implements OnInit {
       payment_mode: this.selectedPaymentMode,
       delivery_mode: this.selectedDeliveryMode,
       createdOn: this.selectedDate,
-      user_name: this.selectedUserName
+      user_name: this.selectedUserName,
+      customer_name: this.searchedName
      }
      let filterStr = '';
      for (let item in data) {
@@ -336,11 +414,13 @@ export class BillingComponent implements OnInit {
   }
 
   getBillDetail(id) {
+    this.ui.loader.show()
     this.billService.getBillDetail(id).subscribe((res) => {
        if(res.data) {
          this.detail = res.data
+         this.ui.loader.hide()
        }
-    })
+    },err => this.ui.loader.hide())
   }
 
   editBill(id){

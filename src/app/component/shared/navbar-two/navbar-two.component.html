@@ -1,0 +1,17 @@
+<!-- Sidebar  -->
+<nav id="sidebar">
+  <div class="sidebar-header"> <h3 style="color:white"> <i class="fas fa-heart" style="color:red"></i>&nbsp;<span style="color:red">Desi</span> Chinese</h3>
+  </div>
+  <ul class="list-unstyled">
+   
+    <li routerLinkActive="active"> <a [routerLink]="['/user/billing']"><i class="fas fa-shopping-cart"></i>&nbsp; Billing List</a> </li>
+
+    <li routerLinkActive="active"> <a href="#rankingSubmenu" data-toggle="collapse" aria-expanded="false"
+      class="dropdown-toggle"><i class="fas fa-cogs"></i> &nbsp; Settings</a>
+    <ul class="collapse list-unstyled" id="rankingSubmenu">
+      <li routerLinkActive="active"> <a [routerLink]="['/user/change-pass']">Change Password</a> </li>
+      <li routerLinkActive="active" (click)="logout()"> <a>Logout</a> </li>
+    </ul>
+  </li>
+  </ul>
+</nav>
