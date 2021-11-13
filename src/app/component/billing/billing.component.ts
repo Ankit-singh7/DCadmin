@@ -166,8 +166,8 @@ export class BillingComponent implements OnInit {
             }
             
             .ticket {
-                width: 220px;
-                max-width: 220px;
+                width: 263px;
+                max-width: 263px;
             }
             
             </style>
