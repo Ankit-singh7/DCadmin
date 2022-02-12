@@ -109,7 +109,12 @@
 
                           <th scope="col">Action</th>
                         </ng-container>
+                        <ng-container  *ngIf="role === 'operator'">
+
+                          <th scope="col">View</th>
+                        </ng-container>
                         <th scope="col">Bill ID</th>
+                        <th scope="col">Token ID</th>
                         <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
                         <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
                         <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th>
@@ -148,7 +153,13 @@
                             </td>
                           </ng-template>
                          </ng-container>
+                         <ng-container *ngIf="role === 'operator'">
+                          <td>
+                            <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
+                          </td>
+                        </ng-container>
                         <td><B>{{item.bill_id}}</B></td>
+                        <td><B>{{item.token_id}}</B></td>
                         <td>&#x20B9; {{item.total_price}}</td>
                         <td>{{item.payment_mode}}</td>
                         <td>{{item.delivery_mode}}</td>
@@ -245,22 +256,26 @@
 
         <div  id="print-section">
           <div class="ticket">
-            <p class="centered last-line">LOVE &#10084;&#65039; DESI CHINESE
+            <p class="centered last-line"><span style="font-size:16px;margin-left: 6px;">LOVE &#10084;&#65039; DESI CHINESE</span>
+                <br>A.C. Multi Cuisine Restaurant
+                <br>Free Home Delivery
                 <br>140, B.T Road, Dunlop Supermarket, Block-C, Ground Floor Kolkata-
                 <br>700108 (Near Sonali Cinema)
                 <br><B>All Days Open 12:00 pm to 11:00 pm</B>
                 <br>lovedesichinese@gmail.com
-                <br><B>7044444089</B>
+                <br><B>Visit us at</B>: www.lovedesichinese.com
+                <br><B>7044444089 / 9830891525</B>
 
               </p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>No:</B> {{printDetail?.bill_id}}</p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Name:</B> {{printDetail?.customer_name?printDetail?.customer_name:''}}</p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Phone:</B> {{printDetail?.customer_phone?printDetail?.customer_phone:''}}</p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Alternate Phone:</B> {{printDetail?.customer_alternative_phone?printDetail?.customer_alternative_phone:''}}</p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Address:</B> {{printDetail?.customer_address?printDetail?.customer_address:''}}</p>
-              <p style="margin-bottom:-7px;border-bottom: 1px dotted black"><B>Delivery Mode:</B> {{printDetail?.delivery_mode}}</p>
-              <p><B>Payment Mode:</B> {{printDetail?.payment_mode}}</p>
-            <table>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Date:</B> {{printDetail?.createdOn | date: 'medium'}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>No:</B> {{printDetail?.bill_id}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Name:</B> {{printDetail?.customer_name?printDetail?.customer_name:''}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Phone:</B> {{printDetail?.customer_phone?printDetail?.customer_phone:''}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Alternate Phone:</B> {{printDetail?.customer_alternative_phone?printDetail?.customer_alternative_phone:''}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Address:</B> {{printDetail?.customer_address?printDetail?.customer_address:''}}</p>
+              <p style="margin-left: 6px;margin-bottom:-7px;border-bottom: 1px dotted black"><B>Delivery Mode:</B> {{printDetail?.delivery_mode}}</p>
+              <p style="margin-left: 6px;"><B>Payment Mode:</B> {{printDetail?.payment_mode}}</p>
+            <table style="margin-left: 6px;">
                 <thead>
                     <tr>
                         <th class="quantity" style="border:1px solid black">Q.</th>
@@ -288,9 +303,10 @@
                     </tr>
                 </tbody>
             </table>
-            <p style="margin-bottom:-7px;"># Product once sold will not be taken back.</p>
-            <p style="margin-bottom:-7px;"># Money will not be refunded under any circumstaces.</p>
-            <p># All Services and products are governed under GST guidlines.</p>
+            <p style="margin-left: 6px;margin-bottom:-7px;"># Product once sold will not be taken back.</p>
+            <p style="margin-left: 6px;margin-bottom:-7px;"># Money will not be refunded under any circumstaces.</p>
+            <p style="margin-left: 6px;"># All Services and products are governed under GST guidlines.</p>
+            <p style="text-align: center;"><B>Corporate orders / Designer Birthday Cakes / Catering Services need to pre informed.</B></p>
                 <p class="centered"><B>Thank You Visit Again.</B></p>
         </div> 
         </div>

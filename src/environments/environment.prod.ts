@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: 'https://afternoon-shore-07470.herokuapp.com/api/v1'
+  apiURL: 'https://api.lovedesichinese.com/api/v1'
 };

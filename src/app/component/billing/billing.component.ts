@@ -87,7 +87,7 @@ export class BillingComponent implements OnInit {
   ngOnInit(): void {
     this.getBillList()
     this.getAllUsers()
-    this.getTotalSales()
+    // this.getTotalSales()
     this.getAllPaymentMode()
     this.getAllDeliveryMode()
   }
@@ -115,48 +115,48 @@ export class BillingComponent implements OnInit {
             <title>Print tab</title>
             <style>
             p{
-              font-size:10px;
+              font-size:12px;
             }
             
             td,
             th,
             tr,
             table {
-                font-size:10px;
+                font-size:14px;
                 border-top: 1px solid black;
                 border-collapse: collapse;
             }
             
             td.description,
             th.description {
-                width: 80px;
-                max-width: 80px;
+                width: 85px;
+                max-width: 85px;
             }
 
             td.total,
             th.total {
-                width: 80px;
-                max-width: 80px;
+                width: 85px;
+                max-width: 85px;
             }
             
             td.quantity,
             th.quantity {
-                width: 40px;
-                max-width: 40px;
+                width: 45px;
+                max-width: 45px;
                 word-break: break-all;
             }
             
             td.price,
             th.price {
-                width: 40px;
-                max-width: 40px;
+                width: 45px;
+                max-width: 45px;
                 word-break: break-all;
             }
 
             td.t-price,
             th.t-price {
-                width: 60px;
-                max-width: 60px;
+                width: 65px;
+                max-width: 65px;
                 word-break: break-all;
             }
             
@@ -166,8 +166,8 @@ export class BillingComponent implements OnInit {
             }
             
             .ticket {
-                width: 263px;
-                max-width: 263px;
+                width: 268px;
+                max-width: 268px;
             }
             
             </style>
@@ -239,37 +239,37 @@ export class BillingComponent implements OnInit {
     })
   }
 
-  getTotalSales = () => {
-    this.total = 0
-    let data = {
-      startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
-      endDate: moment(this.selectedEndDate).format('DD-MM-YYYY'),
-      payment_mode: this.selectedPaymentMode,
-      delivery_mode: this.selectedDeliveryMode,
-      createdOn: this.selectedDate,
-      bill_by: this.selectedUserName
-     }
-     let filterStr = '';
-     for (let item in data) {
-        if(data[item]) {
-          filterStr = `${filterStr}${item}=${data[item]}&`
-        }
-        }
-     console.log(filterStr)
-    this.billService.getTotalSale(filterStr).subscribe((res) => {
-      if(res.data) {
-        let totalArr = res.data;
-        this.total = 0
+  // getTotalSales = () => {
+  //   this.total = 0
+  //   let data = {
+  //     startDate:  moment(this.selectedStartDate).format('DD-MM-YYYY'),
+  //     endDate: moment(this.selectedEndDate).format('DD-MM-YYYY'),
+  //     payment_mode: this.selectedPaymentMode,
+  //     delivery_mode: this.selectedDeliveryMode,
+  //     createdOn: this.selectedDate,
+  //     bill_by: this.selectedUserName
+  //    }
+  //    let filterStr = '';
+  //    for (let item in data) {
+  //       if(data[item]) {
+  //         filterStr = `${filterStr}${item}=${data[item]}&`
+  //       }
+  //       }
+  //    console.log(filterStr)
+  //   this.billService.getTotalSale(filterStr).subscribe((res) => {
+  //     if(res.data) {
+  //       let totalArr = res.data;
+  //       this.total = 0
 
-        for(let i of totalArr) {
-          this.total = this.total + i.total
-        }
-        console.log(this.total);
-      } else {
-        this.total = 0;
-      }
-    })
-  }
+  //       for(let i of totalArr) {
+  //         this.total = this.total + i.total
+  //       }
+  //       console.log(this.total);
+  //     } else {
+  //       this.total = 0;
+  //     }
+  //   })
+  // }
 
 
 
@@ -302,6 +302,15 @@ export class BillingComponent implements OnInit {
              date: moment(item.createdOn).format('YYYY-MM-DD'),
              ...item
         }))
+        if(res.data?.result) {
+      
+          this.total = 0
+          for(let item of res.data.result) {
+             this.total = this.total + item.total_price
+          }
+        } else {
+          this.total = 0;
+        }
 
         this.totalPage = res.data.total
       } 
@@ -325,7 +334,7 @@ export class BillingComponent implements OnInit {
         this.selectedDate = val
       }
       this.getBillList()
-      this.getTotalSales()
+      // this.getTotalSales()
   }
 
   onDateSelect(){
@@ -345,7 +354,7 @@ export class BillingComponent implements OnInit {
       })
     } else {
       this.getBillList()
-      this.getTotalSales()
+      // this.getTotalSales()
     }
   }
 
@@ -404,7 +413,7 @@ export class BillingComponent implements OnInit {
             timer: 1500
           })
          this.billList.splice(index,1)
-         this.getTotalSales()
+        //  this.getTotalSales()
           this.ui.loader.hide()
         }, err => this.ui.loader.hide())
       } else if (result.isDenied) {
