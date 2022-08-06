@@ -16,11 +16,11 @@ import { BranchService } from 'src/app/service/branch/branch.service';
 
 
 @Component({
-  selector: 'app-billing',
-  templateUrl: './billing.component.html',
-  styleUrls: ['./billing.component.css']
+  selector: 'app-employee-wise',
+  templateUrl: './employee-wise.component.html',
+  styleUrls: ['./employee-wise.component.css']
 })
-export class BillingComponent implements OnInit {
+export class EmployeeWiseComponent implements OnInit {
 
 
 
@@ -62,7 +62,7 @@ export class BillingComponent implements OnInit {
   public printDetail;
 
 
-  selectedPerPage = 10;
+  selectedPerPage = 10000;
   currentpage: number = 1;
   totalPage: number;
   role = '';
@@ -85,6 +85,12 @@ export class BillingComponent implements OnInit {
                   this.role = res
                   console.log(res)
                 }) 
+                this.getBillList()
+                this.getAllUsers()
+                // this.getTotalSales()
+                this.getAllPaymentMode()
+                this.getAllDeliveryMode()
+                this.getBranchDetail()
               }
 
   ngOnInit(): void {
@@ -310,10 +316,25 @@ export class BillingComponent implements OnInit {
     this.billService.getBillingList(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
       this.billList = [];
       if(res.data) {
-        this.billList = res.data.result.map((item) => ({
+        let list= res.data.result.map((item) => ({
              date: moment(item.createdOn).format('YYYY-MM-DD'),
              ...item
         }))
+        console.log(list)
+        this.billList = list.reduce((items,item)=> {
+          const {user_name, total_price} = item
+          let itemIndex = items.findIndex((item) => item.user_name === user_name)
+          if(itemIndex === -1) {
+           items.push({
+             user_name, total_price
+           });
+          } else {
+           items[itemIndex].total_price += total_price;
+          }
+
+          return items;
+
+        },[])
         this.total = parseInt((res.data.total).split('-')[0]).toFixed(2)        
         if(res.data.result.length>0) {
         
@@ -324,6 +345,7 @@ export class BillingComponent implements OnInit {
         this.total = 0;
       } 
       this.ui.loader.hide()
+      console.log(this.billList)
     },(err) => this.ui.loader.hide())
   }
 

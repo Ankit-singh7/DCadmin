@@ -1,0 +1,167 @@
+
+  <!-- Page Content  -->
+
+  <div class="container-fluid">
+    <div class="row dash-tab">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>+ Add Popular Food</b></button>
+        </div>
+      </div>
+      <div class="offset-md-7 col-sm-12 col-md-2 cus-srch">
+        <div class="form-group">
+          SEARCH BY FOOD
+         <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Food" [(ngModel)]="bname" name="bname">
+       </div>
+      </div> 
+
+
+      <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table details_table">
+            <thead>
+              <tr>
+                <th scope="col">Food Name<a href='javascript:void(0)' (click)="changeOrder('food_name')"
+                    class="caret-sort"><i class="fa" [class.fa-caret-down]="!sortOrder"
+                      [class.fa-caret-up]="sortOrder"></i></a></th>
+                <th scope="col">Price</th>
+                <th scope="col">Food Type</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngIf='foodList?.length; else elseBlock'>
+              <tr *ngFor="let item of foodList | filter: 'food_name' : bname ; index as i;">
+                <td><B>{{item.food_name | titlecase}}</B></td>
+                <td>{{item.price}}</td>
+                <td>{{item.food_type}}</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addWaiter2"
+                    (click)="getfoodDetail(item.food_id)"><i class="fa fa-pencil"></i></button>
+                  <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"
+                    (click)="deleteFood(i,item.food_id)"><i class="fa fa-trash-o"></i></button>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #elseBlock>
+              <tbody>
+                <tr>
+                  <td class="text-center" colspan="100%">{{response}}</td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!-- <pagination-controls (pageChange)="getOperatorList($event)" style="text-align: center;"></pagination-controls> -->
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+<div id="addWaiter" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeAddModal>
+<div class="modal-dialog modal-lg">
+  <div class="modal-content" style="padding:2%">
+    <form id="subform" role="form" #subForm="ngForm">
+      <div class="row">
+        <div class="col-12">
+          <h5>Add a Food</h5>
+        </div>
+        <div class="offset-md-1 col-sm-12 col-md-11">
+          <div class=" form-group position-relative">
+            <input type="text" class="form-control mb-4" placeholder="Food Name" name="bn" [(ngModel)]="data.food_name"
+              required />
+          </div>
+        </div>
+          <div  class="offset-md-1 col-sm-12 col-md-11">
+            <div class="form-group position-relative">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Food Type</label>
+                </div>
+                <select class="custom-select" placeholder="" id="inputGroupSelect01"
+                  [(ngModel)]="data.food_type" name="slot2338989" (change)="changeFoodType($event.target.value)">
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+      </div>
+      <div class="row">
+        <div class="offset-md-1 col-sm-12 col-md-10">
+          <div class="form-group position-relative">
+            <input type="text" class="form-control mb-4" placeholder="Price" name="gst" [(ngModel)]="data.price"
+              required />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12" style="text-align: center;">
+          <button type="button" class="btn btn-success" [disabled]="!subForm.valid"
+            (click)="addFood()">SUBMIT</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+</div>
+
+<div id="addWaiter2" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeEditModal>
+<div class="modal-dialog modal-lg">
+  <div class="modal-content" style="padding:2%">
+    <ng-container *ngIf="detail">
+
+      <form id="subform" role="form" #subForm="ngForm">
+        <div class="row">
+          <div class="col-12">
+            <h5>Edit a Food</h5>
+          </div>
+          <div class="offset-md-1 col-sm-12 col-md-11">
+            <div class=" form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Food Name" name="bn" [(ngModel)]="detail.food_name"
+                required />
+            </div>
+          </div>
+            <div  class="offset-md-1 col-sm-12 col-md-11">
+              <div class="form-group position-relative">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Food Type</label>
+                  </div>
+                  <select class="custom-select" placeholder="" id="inputGroupSelect01"
+                    [(ngModel)]="detail.food_type" name="slot2338989" (change)="changeFoodType($event.target.value)">
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-sm-12 col-md-10">
+            <div class="form-group position-relative">
+              <input type="text" class="form-control mb-4" placeholder="Price" name="gst" [(ngModel)]="detail.price"
+                required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" style="text-align: center;">
+            <button type="button" class="btn btn-success" [disabled]="!subForm.valid"
+              (click)="editFood(detail.food_id)">SUBMIT</button>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+
+  </div>
+</div>
+</div>

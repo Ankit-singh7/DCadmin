@@ -42,6 +42,9 @@ export class HeaderComponent {
          if(this.activatedRoute === '/user/billing') {
           this.title = 'BILLING LIST'
          }
+         if(this.activatedRoute === '/user/employee-wise') {
+          this.title = 'EMPLOYEE WISE SALES'
+         }
          if(this.activatedRoute === '/user/session') {
           this.title = 'SESSION LIST'
          }
@@ -72,6 +75,10 @@ export class HeaderComponent {
          if(this.activatedRoute === '/user/change-pass') {
           this.title = 'CHANGE PASSWORD'
          }
+         if(this.activatedRoute === '/user/password-food') {
+          this.title = 'POPULAR FOOD LIST'
+         }
+
       }
     })
   }

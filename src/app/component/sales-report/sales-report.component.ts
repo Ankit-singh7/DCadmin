@@ -6,6 +6,7 @@ import { FoodService } from 'src/app/service/food/food.service';
 declare var $;
 import swal from 'sweetalert2';
 import { TemplateParseResult } from '@angular/compiler';
+import { BillingService } from 'src/app/service/billing/billing.service';
 
 @Component({
   selector: 'app-sales-report',
@@ -28,7 +29,7 @@ export class SalesReportComponent implements OnInit {
   public total: any;
 
 
-selectedPerPage = 10;
+selectedPerPage = 10000;
 currentpage: number = 1;
 totalPage: number;
   
@@ -39,6 +40,7 @@ totalPage: number;
   
   constructor(private router: Router,
               private foodService: FoodService,
+              private billService: BillingService,
               private ui: LoaderService ) { }
   
   ngOnInit(): void {
@@ -64,15 +66,21 @@ totalPage: number;
         }
         }
     this.ui.loader.show()
-    this.foodService.getAllSalesReport(filterStr).subscribe((res) => {
+    this.billService.getBillingList(this.selectedPerPage,this.currentpage,filterStr).subscribe((res) => {
       this.reportList = [];
       if(res.data) {
-        let arr1 = JSON.parse(JSON.stringify(res.data))
-        let keyArr = arr1.map((i) => i.ingredient_id)
-        console.log(keyArr)
-       for(let i = 0; i< arr1.length;i++) {
+        let arr1 = JSON.parse(JSON.stringify(res.data.result))
+        let reports = [];
+        for(let item of arr1) {
+          for(let product of item.products) {
+            reports.push(product)
+          }
+        }
+        
+       let keyArr = reports.map((i) => i.food_id)
+       for(let i = 0; i< reports.length;i++) {
         //  debugger
-         let tempArr = arr1.filter((item) => item.food_id === arr1[i].food_id)
+         let tempArr = reports.filter((item) => item.food_id === reports[i].food_id)
          console.log(tempArr)
          if(tempArr.length>1) {
            let newObj = JSON.parse(JSON.stringify(tempArr[0]))

@@ -14,6 +14,9 @@ export class BillingService {
    getBillingList(perPage?:number,currentPage?:number,paramObj?:any): Observable<any> {
      return this.http.get(`${environment.apiURL}/bill/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
    }
+   getSalesReport(paramObj?:any): Observable<any> {
+    return this.http.get(`${environment.apiURL}/bill/view/all?${paramObj}`)
+  }
    deleteBill(id): Observable<any>{
      return this.http.get(`${environment.apiURL}/bill/${id}/delete`)
    }

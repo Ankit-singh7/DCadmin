@@ -15,6 +15,18 @@ const routes: Routes = [
       loadChildren: () => import('../../../app/component/billing/billing.module').then( m => m.BillingModule)
     },
     {
+      path: 'employee-wise',
+      loadChildren: () => import('../../../app/component/employee-wise-sales/employee-wise.module').then( m => m.EmployeeWiseModule)
+    },
+    {
+      path: 'branch',
+      loadChildren: () => import('../../../app/component/branch/branch.module').then( m => m.BranchModule)
+    },
+    {
+      path: 'popular-food',
+      loadChildren: () => import('../../../app/component/popular-food/popular-food.module').then( m => m.PopularFoodModule)
+    },
+    {
       path: 'session',
       loadChildren: () => import('../../../app/component/session/session.module').then( m => m.SessionModule)
     },

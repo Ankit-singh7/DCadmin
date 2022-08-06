@@ -39,12 +39,6 @@
               </select>
              </div>
           </div>
-          <div class="col-sm-2 cus-srch">
-            <div class="form-group">
-               SEARCH BY NAME
-              <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchedName" name="searchName" (ngModelChange)="onCustomerChange()">
-            </div>
-          </div>  
           <div class="col-sm-3 cus-srch">
             <div class="form-group">
                FROM DATE
@@ -84,7 +78,7 @@
                 <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>SEARCH</b></button>
               </div>
             </div> -->
-            <div class="col-sm-12 col-md-3 ">
+            <!-- <div class="col-sm-12 col-md-3 ">
               <div class="form-group">
                 SELECT PER PAGE
                 <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
@@ -95,15 +89,15 @@
                   <option value="10000">Show All</option>
                 </select>
                </div>
-            </div> 
+            </div>  -->
 
        
 
             
                   
                   <div class="col-sm-12">
-                 <div class="table-responsive scrollmenu">
-                  <table class="table details_table ">
+                 <div class="table scrollmenu">
+                  <table class="details_table ">
                     <thead>
                       <tr>
                         <ng-container *ngIf="role === 'operator'">
@@ -114,29 +108,24 @@
 
                           <th scope="col">View</th>
                         </ng-container>
-                        <th scope="col">Bill ID</th>
-                        <th scope="col">Token ID</th>
-                        <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
-                        <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
-                        <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th>
-                        <th scope="col">Customer <a href = 'javascript:void(0)' (click)="changeOrder('customer_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.customer_name" [class.fa-caret-up]="!sortFields.customer_name"></i></a></th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Alternative Phone</th>
-                        <th scope="col">Address</th>
+                        <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
+                         <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
+                       <!-- <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
+                        <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th> -->
+                        <!-- <th scope="col">Address</th>
                         <th scope="col">Bill Date </th>
                         <th scope="col">Created At</th>
                         <th scope="col">In Cook Slot At</th>
                         <th scope="col">Cooked At </th>
-                        <th scope="col">Delivered At </th>
-                        <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
-                        <ng-container  *ngIf="role === 'admin'">
+                        <th scope="col">Delivered At </th> -->
+                        <!-- <ng-container  *ngIf="role === 'admin'">
 
                           <th scope="col">View</th>
                         </ng-container>
                         <ng-container *ngIf="role === 'admin'">
 
                           <th scope="col">Action</th>
-                        </ng-container>
+                        </ng-container> -->
                       </tr>
                     </thead>
                     <tbody *ngIf='billList?.length; else elseBlock'>
@@ -159,22 +148,17 @@
                             <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
                           </td>
                         </ng-container>
-                        <td><B>{{item.bill_id}}</B></td>
-                        <td><B>{{item.token_id}}</B></td>
+                        <td>{{item.user_name}}</td>
                         <td>&#x20B9; {{item.total_price}}</td>
-                        <td>{{item.payment_mode}}</td>
+                        <!-- <td>{{item.payment_mode}}</td>
                         <td>{{item.delivery_mode}}</td>
-                        <td>{{item.customer_name}}</td>
-                        <td>{{item.customer_phone}}</td>
-                        <td>{{item.customer_alternative_phone}}</td>
-                        <td>{{item.customer_address}}</td>
-                        <td>{{item.createdOn | date:'MMM d, y'}}</td>
+                        <td>{{item.customer_address}}</td> -->
+                        <!-- <td>{{item.createdOn | date:'MMM d, y'}}</td>
                         <td>{{item.createdOn | date:'h:mm:ss a'}}</td>
                         <td>{{item.incookAt | date:'h:mm:ss a'}}</td>
                         <td>{{item.cookedAt | date:'h:mm:ss a'}}</td>
-                        <td>{{item.dispatchedAt | date:'h:mm:ss a'}}</td>
-                        <td>{{item.user_name}}</td>
-                        <ng-container *ngIf="role === 'admin'">
+                        <td>{{item.dispatchedAt | date:'h:mm:ss a'}}</td> -->
+                        <!-- <ng-container *ngIf="role === 'admin'">
                           <td>
                             <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
                           </td>
@@ -183,7 +167,7 @@
                           <td>
                             <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"  (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
                           </td>
-                       </ng-container>
+                       </ng-container> -->
              
                       </tr>
                      </tbody>
@@ -255,7 +239,7 @@
 
 
 
-        <div  id="print-section">
+        <!-- <div  id="print-section">
           <div class="ticket">
             <p class="centered last-line"><span style="font-size:16px;margin-left: 6px;">LOVE &#10084;&#65039; DESI CHINESE</span>
                 <br>A.C. Multi Cuisine Restaurant
@@ -310,7 +294,7 @@
             <p style="text-align: center;"><B>Corporate orders / Designer Birthday Cakes / Catering Services need to pre informed.</B></p>
                 <p class="centered"><B>Thank You Visit Again.</B></p>
         </div> 
-        </div>
+        </div> -->
         
 
 
