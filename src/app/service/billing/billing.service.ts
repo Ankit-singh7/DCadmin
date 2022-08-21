@@ -29,4 +29,12 @@ export class BillingService {
    getTotalSale(paramObj?:any): Observable<any> {
      return this.http.get(`${environment.apiURL}/bill/total?${paramObj}`)
    }
+
+   getDiscount(): Observable<any> {
+     return this.http.get(`${environment.apiURL}/bill/get_discount`)
+   }
+
+   updateDiscount(data): Observable<any> {
+    return this.http.post(`${environment.apiURL}/bill/update_discount`,data)
+   }
 }

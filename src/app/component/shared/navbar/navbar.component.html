@@ -25,6 +25,7 @@
     </ul>
   </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/billing']"><i class="fas fa-shopping-cart"></i>&nbsp; Billing List</a> </li>
+    <li routerLinkActive="active" data-toggle="modal" data-target="#addWaiter" (click)="getDiscount()"><a>(%) &nbsp; Update Dine-in Charges</a> </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/session']"><i class="fas fa-chart-bar"></i>&nbsp; Session List</a> </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/report']"><i class="fas fa-file-alt"></i>&nbsp; Ingredeints Report</a> </li>
     <li routerLinkActive="active"> <a [routerLink]="['/user/sales-report']"><i class="fas fa-shopping-cart"></i>&nbsp; Sales Report</a> </li>
@@ -41,3 +42,58 @@
   </li>
   </ul>
 </nav>
+
+
+<div id="addWaiter" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+aria-labelledby="myLargeModalLabel" aria-hidden="true" #closeAddModal>
+<div class="modal-dialog modal-lg">
+  <div class="modal-content" style="padding:2%">
+    <form id="subform3" role="form" #subForm3="ngForm">
+      <div class="row">
+        <div class="col-12">
+          <h5>Update Dine-in Service Charge, CGST, SGST (%)</h5>
+        </div>
+        <ng-container *ngIf="loading; else notLoading">
+          <p style="margin-left: 39%;
+          color: green;
+          font-weight: bold;">Loading Current Service Charge ...</p> 
+        </ng-container>
+        <ng-template #notLoading>
+
+          <div class="col-sm-6">
+            <div class=" form-group position-relative">
+              <label>Service Charges</label>
+              <input type="text" class="form-control mb-4" placeholder="Unit Name" name="Cname" [(ngModel)]="discount"
+                required />
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <div class=" form-group position-relative">
+              <label>SGST</label>
+              <input type="text" class="form-control mb-4" placeholder="Unit Name" name="pname" [(ngModel)]="SGST"
+                required />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class=" form-group position-relative">
+              <label>CGST</label>
+              <input type="text" class="form-control mb-4" placeholder="Unit Name" name="qname" [(ngModel)]="CGST"
+                required />
+            </div>
+          </div>
+        </ng-template>
+
+      </div>
+      <div class="row">
+        <div class="col-12" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="update_discount()" [disabled]="loading"
+            >SUBMIT</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+</div>

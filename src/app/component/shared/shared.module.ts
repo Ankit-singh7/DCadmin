@@ -5,12 +5,13 @@ import { RouterModule } from '@angular/router';
 import { FilterPipe } from './pipe/filter.pipe';
 import { HeaderComponent } from './header/header.component';
 import { NavbarTwoComponent } from './navbar-two/navbar-two.component';
-
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [NavbarComponent,FilterPipe, HeaderComponent, NavbarTwoComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   exports: [NavbarComponent, FilterPipe, HeaderComponent, NavbarTwoComponent]
 })

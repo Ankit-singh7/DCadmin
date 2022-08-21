@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { BillingService } from 'src/app/service/billing/billing.service';
 import { UserService } from 'src/app/service/user/user.service';
 declare var $;
 @Component({
@@ -11,7 +12,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   public groupId: string;
   public role = '';
-  constructor(private route: Router,private userService: UserService) {
+  discount = 0;
+  SGST = 0;
+  CGST = 0;
+  loading = false;
+  @ViewChild('closeAddModal') closeAddModal: ElementRef;
+  constructor(private route: Router,private userService: UserService, private billService: BillingService) {
     this.userService.getRole().subscribe((res) => {
       this.role = '';
       this.role = res
@@ -50,5 +56,26 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   logout(){
     localStorage.setItem('isLoggedIn', String(false));
     this.route.navigate(['/login']);
+  }
+
+  getDiscount(){
+    this.loading = true
+    this.billService.getDiscount().subscribe((res) => {
+      this.discount = res.data?.discount;
+      this.SGST = res.data?.SGST
+      this.CGST = res.data?.CGST
+      this.loading = false
+    },err => this.loading = false)
+  }
+
+  update_discount(){
+    let data = {
+      discount: this.discount,
+      SGST: this.SGST,
+      CGST: this.CGST
+    }
+    this.billService.updateDiscount(data).subscribe((res) => {
+      this.closeAddModal.nativeElement.click();
+    })
   }
 }
