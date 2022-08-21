@@ -239,10 +239,11 @@
     }
 
     #sidebar .sidebar-header {
-    padding:10px 15px;
-    background: #000;
-    margin-bottom:20px;
-    height:60px;
+        padding: 18px 15px;
+        background: #000;
+        margin-bottom: 20px;
+        height: 63px;
+        margin-top: 26px;
     }
 
     #sidebar ul.components {

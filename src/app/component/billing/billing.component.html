@@ -4,11 +4,13 @@
 
       <div class="container-fluid main-container">
         <div class="row dash-tab">
-          <!-- <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-               <h4>TOTAL SALES : &#x20B9; <span style="color:#69d73d">{{total}}</span></h4>
+          <ng-container  *ngIf="role === 'admin'">
+            <div class="col-md-12 col-sm-12">
+              <div class="form-group">
+                 <h4>TOTAL SALES : &#x20B9; <span style="color:#69d73d">{{total}}</span></h4>
+              </div>
             </div>
-          </div> -->
+          </ng-container>
           <div class="col-sm-2 cus-srch">
             <div class="form-group">
               PAYMENT OPTION
@@ -39,7 +41,7 @@
               </select>
              </div>
           </div>
-          <div class="col-sm-2 cus-srch">
+          <div class="offset-sm-3 col-sm-3 cus-srch">
             <div class="form-group">
                SEARCH BY NAME
               <input type="text" class="form-control pl-0" id="birthday" placeholder="Search By Cus Name" [(ngModel)]="searchedName" name="searchName" (ngModelChange)="onCustomerChange()">
