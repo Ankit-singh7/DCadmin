@@ -98,6 +98,7 @@ totalPage: number;
          }
        }
       //  this.totalPage = this.reportList.length;
+      this.total = parseInt((res.data.total).split('-')[0]).toFixed(2)      
 
      console.log(this.reportList)
 
