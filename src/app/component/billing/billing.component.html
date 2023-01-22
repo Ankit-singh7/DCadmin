@@ -257,7 +257,7 @@
 
 
 
-        <div  id="print-section">
+        <div  id="print-section" *ngIf="showPrint">
           <div class="ticket">
             <p class="centered last-line"><span style="font-size:16px;margin-left: 6px;">LOVE &#10084;&#65039; DESI CHINESE</span>
                 <br>A.C. Multi Cuisine Restaurant
@@ -298,12 +298,48 @@
                         <td class="t-price" style="border:1px solid black;text-align: center;">&#x20B9; {{i?.price * i?.quantity}}</td>
                     </tr>
                   </ng-container>
+         
+                  <ng-container *ngIf="this.printDetail?.delivery_mode === 'Dine-in' || this.printDetail?.delivery_mode === 'Dine-In'; else notdine">
+                      <tr>
+                          <td class="quantity"></td>
+                          <td class="t-price"></td>
+                          <td class="total" style="text-align:center"><B>TOTAL</B></td>
+                          <td class="t-price" style="text-align:center">&#x20B9; {{revised_total}}</td>
+                      </tr>
+
+                      <tr>
+                        <td class="quantity"></td>
+                        <td class="t-price"></td>
+                        <td class="total" style="text-align:center">SC ( {{discount}} % )</td>
+                        <td class="t-price" style="text-align:center">&#x20B9; {{service_charge_amount}}</td>
+                    </tr>
                     <tr>
+                      <td class="quantity"></td>
+                      <td class="t-price"></td>
+                      <td class="total" style="text-align:center">SGST ( {{SGST}} % )</td>
+                      <td class="t-price" style="text-align:center">&#x20B9; {{sgst_amount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="quantity"></td>
+                    <td class="t-price"></td>
+                    <td class="total" style="text-align:center">CGST ( {{CGST}} % )</td>
+                    <td class="t-price" style="text-align:center">&#x20B9; {{cgst_amount}}</td>
+                </tr>
+                <tr>
+                  <td class="quantity"></td>
+                  <td class="t-price"></td>
+                  <td class="total" style="text-align:center"><B>GRAND TOTAL</B></td>
+                  <td class="t-price" style="text-align:center"><B>&#x20B9; {{printDetail?.total_price}}</B></td>
+              </tr>
+                    </ng-container>
+                    <ng-template #notdine>
+                      <tr>
                         <td class="quantity"></td>
                         <td class="t-price"></td>
                         <td class="total" style="text-align:center"><B>TOTAL</B></td>
                         <td class="t-price" style="text-align:center"><B>&#x20B9; {{printDetail?.total_price}}</B></td>
                     </tr>
+                    </ng-template>
                 </tbody>
             </table>
             <p style="margin-left: 6px;margin-bottom:-7px;"># {{branchDetail?.footer_1}}</p>

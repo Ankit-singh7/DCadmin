@@ -39,6 +39,7 @@ export class BillingComponent implements OnInit {
   };
   public payment = [];
   public delivery = [];
+  public showPrint = false
   // const debouncetime = pipe(debounceTime(1000));
   
 
@@ -72,6 +73,13 @@ export class BillingComponent implements OnInit {
   selectedStartDate: any;
   selectedEndDate: any;
   branchDetail: any;
+  discount: any;
+  SGST: any;
+  CGST: any;
+  sgst_amount: number;
+  cgst_amount: number;
+  service_charge_amount: number;
+  revised_total: number;
 
 
   constructor(private router: Router,
@@ -94,6 +102,7 @@ export class BillingComponent implements OnInit {
     this.getAllPaymentMode()
     this.getAllDeliveryMode()
     this.getBranchDetail()
+    this.getDiscount()
   }
 
 
@@ -102,8 +111,29 @@ export class BillingComponent implements OnInit {
    this.getBillList()
   }
 
+
+  getDiscount(){
+    this.billService.getDiscount().subscribe((res) => {
+      this.discount = res.data?.discount;
+      this.SGST = res.data?.SGST
+      this.CGST = res.data?.CGST
+    })
+  }
+
   printBill(item){
+    this.showPrint = true
     this.printDetail = item
+    this.revised_total = 0  
+    if(this.printDetail?.delivery_mode === 'Dine-in' || this.printDetail?.delivery_mode === 'Dine-In') {
+
+      for (let i of item.products) {
+        this.revised_total += Number(i.price * i.quantity)
+      }
+      
+      this.sgst_amount = Math.round((Number(this.SGST)/100)*this.revised_total)
+      this.cgst_amount = Math.round((Number(this.CGST)/100)*this.revised_total)
+      this.service_charge_amount = Math.round((Number(this.discount)/100)*this.revised_total)
+    } 
     setTimeout(() => {
       
       let printContents, popupWin;
@@ -142,6 +172,7 @@ export class BillingComponent implements OnInit {
             th.total {
                 width: 85px;
                 max-width: 85px;
+                font-size:11px;
             }
             
             td.quantity,
@@ -182,8 +213,10 @@ export class BillingComponent implements OnInit {
       );
       popupWin.document.close();
     },100)
+
     item.printed = 'Yes'
     this.billService.editBill(item.bill_id,item).subscribe((res) => {
+      this.showPrint = false
     })
 
   }

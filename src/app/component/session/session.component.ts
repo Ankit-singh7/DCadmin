@@ -24,6 +24,7 @@ public sortFields = {
   user_name:true,
   session_amount: true,
   drawer_balance:true,
+  closing_balance: true,
   withdrawn: true
 };
 
