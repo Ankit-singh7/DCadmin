@@ -3,6 +3,8 @@ import { FoodService } from 'src/app/service/food/food.service';
 import { LoaderService } from 'src/app/service/loader/loader.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 declare var $;
 
@@ -13,6 +15,7 @@ declare var $;
 })
 export class FoodCategoryComponent implements OnInit {
 
+  private searchTerms = new Subject<string>();
   public foodCatList = [];
   public detail:any;
   public foodCatName:string;
@@ -34,10 +37,27 @@ export class FoodCategoryComponent implements OnInit {
   constructor(
     private router: Router,
     private foodService: FoodService,
-    private ui: LoaderService ) { }
+    private ui: LoaderService ) {
+      this.searchTerms
+      .pipe(
+        debounceTime(500), // Wait for 300 milliseconds after the last event
+        distinctUntilChanged(), // Only proceed if the search term has changed
+        switchMap((term: string) => this.foodService.getFoodCategoryByName(term))
+      )
+      .subscribe((data) => {
+        // Process the data from the API
+        console.log(data);
+        this.foodCatList = JSON.parse(JSON.stringify(data.data));
+      });
+     }
 
   ngOnInit(): void {
     this.getAllFoodCat()
+  }
+
+  search(term: string): void {
+    // Push the search term into the observable stream
+    this.searchTerms.next(term);
   }
 
 

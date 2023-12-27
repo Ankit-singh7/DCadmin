@@ -111,6 +111,10 @@ export class FoodService {
   getFoodListByCategory = (id): Observable<any> => {
     return this.http.get(`${environment.apiURL}/category/${id}/getSubCatList`)
   }
+
+  getFoodCategoryByName = (name): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/category/getCatListByName?name=${name}`)
+  }
   // END
 
   //Food List api
@@ -133,6 +137,10 @@ export class FoodService {
 
   getSingleFoodDetail = (id): Observable<any> => {
     return this.http.get(`${environment.apiURL}/subcategory/${id}/getById`)
+  }
+
+  getFoodListByName = (name): Observable<any> => {
+    return this.http.get(`${environment.apiURL}/subcategory/getSubCatListByName?name=${name}`)
   }
 
   // Food Ingredient api

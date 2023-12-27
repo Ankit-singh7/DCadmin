@@ -8,7 +8,13 @@
                   Ingredient Category</b></button>
             </div>
           </div>
-          <div class="offset-md-6 col-sm-12 col-md-2 ">
+          <div class="offset-md-3 col-sm-12 col-md-2 cus-srch">
+            <div class="form-group">
+              SEARCH BY FOOD
+             <input type="text" (input)="search($event.target.value)" class="form-control pl-0" id="birthday" placeholder="Search By Food" name="bname">
+           </div>
+          </div> 
+          <div class="offset-md-1 col-sm-12 col-md-2 ">
             <div class="form-group">
               SELECT PER PAGE
               <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
