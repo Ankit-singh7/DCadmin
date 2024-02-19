@@ -39,136 +39,42 @@
               </select>
              </div>
           </div>
+          <ng-container *ngIf="role === 'admin'">
+
+            <div class="col-sm-3 cus-srch">
+              <div class="form-group">
+                 FROM DATE
+                <input type="date" class="form-control pl-0" id="birthday1" placeholder="From Date" [(ngModel)]="selectedStartDate" name="selectedSDate" (change)="changedDate('start',$event.target.value)">
+                
+              </div>
+            </div> 
           <div class="col-sm-3 cus-srch">
             <div class="form-group">
-               FROM DATE
-              <input type="date" class="form-control pl-0" id="birthday1" placeholder="From Date" [(ngModel)]="selectedStartDate" name="selectedSDate" (change)="changedDate('start',$event.target.value)">
+               TO DATE
+              <input type="date" class="form-control pl-0" id="birthday2" placeholder="To Date" [(ngModel)]="selectedEndDate" name="selectedEDate" (change)="changedDate('end',$event.target.value)">
               
             </div>
           </div> 
-        <div class="col-sm-3 cus-srch">
-          <div class="form-group">
-             TO DATE
-            <input type="date" class="form-control pl-0" id="birthday2" placeholder="To Date" [(ngModel)]="selectedEndDate" name="selectedEDate" (change)="changedDate('end',$event.target.value)">
-            
-          </div>
-        </div> 
-        <div class="col-sm-3">
-            <div class="form-group mt-3">
-              <button class="shortcut-btn w-100" (click)="onDateSelect()"><b>SEARCH</b></button>
-            </div>
-          </div>
-     
-            <!-- <div class="col-sm-3 cus-srch">
-              <div class="form-group">
-                 SEARCH BY DATE
-                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
-                
+          <div class="col-sm-3">
+              <div class="form-group mt-3">
+                <button class="shortcut-btn w-100" (click)="onDateSelect()"><b>SEARCH</b></button>
               </div>
-            </div> 
-            <div class="col-sm-3 cus-srch">
-              <div class="form-group">
-                 SEARCH BY DATE
-                <input type="date" class="form-control pl-0" id="birthday" placeholder="select Date" [(ngModel)]="selectedDate" name="selectedDate" (change)="onOptionSelect('date',$event.target.value)">
-                
-              </div>
-            </div> 
-            <div class="col-sm-3">
-              <div class="form-group">
-                <button class="shortcut-btn d-block w-100" data-toggle="modal" data-target="#addWaiter"><b>SEARCH</b></button>
-              </div>
-            </div> -->
-            <!-- <div class="col-sm-12 col-md-3 ">
-              <div class="form-group">
-                SELECT PER PAGE
-                <select name="pay" class="form-control pl-0" id="pay" [(ngModel)]="selectedPerPage" (change)="onLimitSelect($event.target.value)">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                  <option value="10000">Show All</option>
-                </select>
-               </div>
-            </div>  -->
-
-       
-
-            
+            </div>        
+          </ng-container>
                   
                   <div class="col-sm-12">
                  <div class="table scrollmenu">
                   <table class="details_table ">
                     <thead>
                       <tr>
-                        <ng-container *ngIf="role === 'operator'">
-
-                          <th scope="col">Action</th>
-                        </ng-container>
-                        <ng-container  *ngIf="role === 'operator'">
-
-                          <th scope="col">View</th>
-                        </ng-container>
-                        <th scope="col">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
-                         <th scope="col">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
-                       <!-- <th scope="col">Payment Option <a href = 'javascript:void(0)' (click)="changeOrder('payment_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.payment_mode" [class.fa-caret-up]="!sortFields.payment_mode"></i></a></th>
-                        <th scope="col">Bill Type <a href = 'javascript:void(0)' (click)="changeOrder('delivery_mode')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.delivery_mode" [class.fa-caret-up]="!sortFields.delivery_mode"></i></a></th> -->
-                        <!-- <th scope="col">Address</th>
-                        <th scope="col">Bill Date </th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">In Cook Slot At</th>
-                        <th scope="col">Cooked At </th>
-                        <th scope="col">Delivered At </th> -->
-                        <!-- <ng-container  *ngIf="role === 'admin'">
-
-                          <th scope="col">View</th>
-                        </ng-container>
-                        <ng-container *ngIf="role === 'admin'">
-
-                          <th scope="col">Action</th>
-                        </ng-container> -->
+                        <th scope="col" colspan="2">Bill By <a href = 'javascript:void(0)' (click)="changeOrder('user_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.user_name" [class.fa-caret-up]="!sortFields.user_name"></i></a></th>
+                         <th scope="col" colspan="2">Price <a href = 'javascript:void(0)' (click)="changeOrder('total_price')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_price" [class.fa-caret-up]="!sortFields.total_price"></i></a></th>
                       </tr>
                     </thead>
                     <tbody *ngIf='billList?.length; else elseBlock'>
                       <tr *ngFor = "let item of billList  |paginate: { itemsPerPage: selectedPerPage, currentPage: currentpage, totalItems: totalPage};  index as i;">
-                        <ng-container *ngIf="role === 'operator'">
-                          <ng-container *ngIf="item?.printed === 'No'; else yesBlock">
-                            
-                            <td>
-                              <button type="button" style="margin-left:4px" class="btn btn-success btn-sm"  (click)="printBill(item)"><i class="fa fa-print"></i></button>
-                            </td>
-                          </ng-container>
-                          <ng-template #yesBlock>
-                            <td>
-                              <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"  (click)="printBill(item)"><i class="fa fa-print"></i></button>
-                            </td>
-                          </ng-template>
-                         </ng-container>
-                         <ng-container *ngIf="role === 'operator'">
-                          <td>
-                            <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
-                          </td>
-                        </ng-container>
-                        <td>{{item.user_name}}</td>
-                        <td>&#x20B9; {{item.total_price}}</td>
-                        <!-- <td>{{item.payment_mode}}</td>
-                        <td>{{item.delivery_mode}}</td>
-                        <td>{{item.customer_address}}</td> -->
-                        <!-- <td>{{item.createdOn | date:'MMM d, y'}}</td>
-                        <td>{{item.createdOn | date:'h:mm:ss a'}}</td>
-                        <td>{{item.incookAt | date:'h:mm:ss a'}}</td>
-                        <td>{{item.cookedAt | date:'h:mm:ss a'}}</td>
-                        <td>{{item.dispatchedAt | date:'h:mm:ss a'}}</td> -->
-                        <!-- <ng-container *ngIf="role === 'admin'">
-                          <td>
-                            <button type="button" style="margin-left:4px" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal" (click)="getBillDetail(item.bill_id)"><i class="fa fa-eye"></i></button>
-                          </td>
-                        </ng-container>
-                        <ng-container  *ngIf="role === 'admin'">
-                          <td>
-                            <button type="button" style="margin-left:4px" class="btn btn-danger btn-sm"  (click)="deleteBill(i,item.bill_id)"><i class="fa fa-trash-o"></i></button>
-                          </td>
-                       </ng-container> -->
-             
+                        <td colspan="2">{{item.user_name}}</td>
+                        <td colspan="2">&#x20B9; {{item.total_price}}</td>       
                       </tr>
                      </tbody>
                       <ng-template #elseBlock>

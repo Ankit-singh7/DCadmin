@@ -33,3 +33,9 @@ div.scrollmenu {
       visibility: visible;
     }
   }
+
+  .details_table th,
+.details_table td {
+  width: 10%;
+  text-align: center; /* Center align the content */
+}
