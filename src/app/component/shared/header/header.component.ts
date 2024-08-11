@@ -27,6 +27,9 @@ export class HeaderComponent {
         if(this.activatedRoute === '/user/unit') {
          this.title = 'UNIT LIST'
         }
+        if(this.activatedRoute === '/user/department') {
+          this.title = 'DEPARTMENT LIST'
+         }
         if(this.activatedRoute === '/user/ingredient') {
          this.title = 'INGREDIENT LIST'
         }

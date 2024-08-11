@@ -26,6 +26,7 @@ export class FoodListComponent implements OnInit {
   public detail:any;
   public ingredientName: string;
   public selectedCategory: string
+  public selectedDepartmentId: string;
   price: any;
   type: any;
   foodName: any;
@@ -37,6 +38,7 @@ export class FoodListComponent implements OnInit {
 
   @ViewChild('closeEditModal') closeEditModal: ElementRef;
   @ViewChild('closeAddModal') closeAddModal: ElementRef;
+  departmentList: any;
 
 
  
@@ -60,6 +62,7 @@ export class FoodListComponent implements OnInit {
   ngOnInit(): void {
     this.getFoodCatList()
     this.getFoodList()
+    this.getDepartmentList();
   }
 
   search(term: string): void {
@@ -73,6 +76,18 @@ export class FoodListComponent implements OnInit {
     this.foodService.getFoodCategoryList(500,1).subscribe((res) => {
       if(res.data) {
         this.foodCategoryList = res.data.result
+      } 
+
+    },(err) => {
+      console.log(err)
+    })
+  }
+
+  getDepartmentList = () => {
+
+    this.foodService.getDepartmentList().subscribe((res) => {
+      if(res.data) {
+        this.departmentList = res.data
       } 
 
     },(err) => {
@@ -145,6 +160,7 @@ export class FoodListComponent implements OnInit {
     this.ui.loader.show()
     const data = {
      category_id: this.selectedCategory,
+     department_id: this.selectedDepartmentId,
      name: this.foodName,
      price: Number(this.price),
      type: this.type,
@@ -157,6 +173,7 @@ export class FoodListComponent implements OnInit {
       this.price = '';
       this.type = '';
       this.status = '';
+      this.selectedDepartmentId = '';
        swal.fire({
         icon: 'success',
         title: 'Food item Created Successfully',

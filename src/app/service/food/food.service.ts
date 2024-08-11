@@ -61,6 +61,30 @@ export class FoodService {
 
   // END
 
+    // Department api
+
+    getDepartmentList = (): Observable<any> => {
+      return this.http.get(`${environment.apiURL}/department/view/all`)
+    }
+  
+    createDepartment = (data): Observable<any> => {
+      return this.http.post(`${environment.apiURL}/department/create`,data)
+    }
+  
+    deleteDepartment = (id): Observable<any> => {
+      return this.http.get(`${environment.apiURL}/department/${id}/delete`)
+    }
+  
+    updateDepartment = (id,data): Observable<any> => {
+      return this.http.put(`${environment.apiURL}/department/${id}/update`, data)
+    }
+  
+    getSingleDepartment = (id): Observable<any> => {
+      return this.http.get(`${environment.apiURL}/department/${id}/getById`)
+    }
+
+    // END
+
 
   // Ingredient List api
 

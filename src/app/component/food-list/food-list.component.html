@@ -167,6 +167,25 @@
                   </div>
                 </div>
           </div>
+          <div class="col-sm-11 col-md-5">
+            <div class="form-group position-relative">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Select Department</label>
+                  </div>
+                     <!-- <ng-select [items]="foodCategoryList"  bindLabel="name" bindValue ="category_id"  [closeOnSelect]=true  name="sc" [clearOnBackspace]="false" placeholder="SELECT BRANCH" [(ngModel)]="selectedCategory"  (change) = "getFoodCatList()"   [clearSearchOnAdd] = true autoCorrect = 'on' notFoundText = 'Loading...' loadingText = "Loading...">
+                    </ng-select> -->
+                    <select class="custom-select" placeholder="Choose Department" id="inputGroupSelect01" [(ngModel)]="selectedDepartmentId" name="vn"  required>
+                      <ng-container *ngFor="let item of departmentList">
+                         <option [value]="item.department_id">{{item.department_name}}</option>
+                   </ng-container>
+                    
+                
+               </select>
+                </div>
+              </div>
+      
+        </div>
             </div>
             <div class="row">
               <div class="col-12" style="text-align: center;">
@@ -241,10 +260,10 @@
                           <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Select Status</label>
                           </div>
-                          <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect01" [(ngModel)]="detail.status" name="vs"  required>
+                          <select class="custom-select" placeholder="Choose Status" id="inputGroupSelect016" [(ngModel)]="detail.status" name="vs3"  required>
     
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
+                                <option value="Active" [selected]="detail.status === 'Active'">Active</option>
+                                <option  value="Inactive" [selected]="detail.status === 'Inactive'">Inactive</option>
                            
                           </select>
                         </div>
@@ -265,6 +284,23 @@
                       </div>
                     </div>
               </div>
+              <div class="col-sm-11 col-md-5">
+                <div class="form-group position-relative">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Select Department</label>
+                      </div>
+                        <select class="custom-select" placeholder="Choose Type" id="inputGroupSelect01" [(ngModel)]="detail.department_id" name="vne2"  required>
+                           <ng-container *ngFor="let item of departmentList">
+                              <option [value]="item.department_id" [selected]="item.department_id=== detail.department_id">{{item.department_name}}</option>
+                        </ng-container>
+                         
+                     
+                    </select>
+                    </div>
+                  </div>
+          
+            </div>
                 </div>
                 <div class="row">
                   <div class="col-12" style="text-align: center;">

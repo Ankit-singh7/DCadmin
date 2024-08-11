@@ -9,6 +9,7 @@
     <li routerLinkActive="active"> <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false"
         class="dropdown-toggle"><i class="fas fa-utensils"></i> &nbsp; Food Details</a>
       <ul class="collapse list-unstyled" id="reportSubmenu">
+        <li routerLinkActive="active"> <a [routerLink]="['/user/department']">Department List</a> </li>
         <li routerLinkActive="active"> <a [routerLink]="['/user/ingredient-cat']">Ingredeints Category</a> </li>
         <li routerLinkActive="active"> <a [routerLink]="['/user/unit']">Ingredients Unit</a> </li>
         <li routerLinkActive = "active"> <a [routerLink] = "['/user/ingredient']">Ingredeints</a> </li>

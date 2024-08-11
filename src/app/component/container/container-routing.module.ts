@@ -43,6 +43,10 @@ const routes: Routes = [
       loadChildren: () => import('../../../app/component/unit/unit.module').then( m => m.UnitModule)
     },
     {
+      path: 'department',
+      loadChildren: () => import('../../../app/component/department/department.module').then( m => m.DepartmentModule)
+    },
+    {
       path: 'food-cat',
       loadChildren: () => import('../../../app/component/food-category/food-category.module').then( m => m.FoodCategoryModule)
     },
