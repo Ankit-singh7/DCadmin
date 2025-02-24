@@ -81,6 +81,9 @@ export class HeaderComponent {
          if(this.activatedRoute === '/user/password-food') {
           this.title = 'POPULAR FOOD LIST'
          }
+         if(this.activatedRoute === '/user/employee-sales') {
+          this.title = 'Employee Wise Sales'
+         }
 
       }
     })

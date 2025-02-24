@@ -13,4 +13,12 @@ export class SessionService {
   getSessionList(perPage?:number,currentPage?:number,paramObj?:any): Observable<any>{
     return this.http.get(`${environment.apiURL}/session/view/all?per_page=${perPage}&current_page=${currentPage}&${paramObj}`)
   }
+
+  getSessionDetail(id): Observable<any> {
+    return this.http.get(`${environment.apiURL}/session/${id}/getById`)
+  }
+
+  editSession(id,data): Observable<any> {
+    return this.http.put(`${environment.apiURL}/session/${id}/update`,data)
+  }
 }

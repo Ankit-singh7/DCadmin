@@ -94,6 +94,10 @@ const routes: Routes = [
       path: 'change-pass',
       loadChildren: () => import('../../../app/component/change-password/change-password.module').then( m => m.ChangePasswordModule)
     },
+    {
+      path: 'employee-expense-list',
+      loadChildren: () => import('../../../app/component/employee-expense-list/employee-expense-list.module').then( m => m.EmployeeExpenseListModule)
+    },
   ]}
 ];
 

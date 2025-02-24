@@ -30,4 +30,8 @@ export class EmployeeService {
   editEmployeeDetail(id,data): Observable<any> {
     return this.http.put(`${environment.apiURL}/users/${id}/edit`, data)
   }
+
+  getEmployeeExpenseList(paramObj?:any): Observable<any> {
+    return this.http.get(`${environment.apiURL}/employee-expense?${paramObj}`)
+  }
 }

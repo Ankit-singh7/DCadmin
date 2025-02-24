@@ -193,6 +193,32 @@ changedDate(e) {
   console.log(e)
 }
 
+editSession(id){
+  this.ui.loader.show()
+ delete this.detail.validationToken
+ delete this.detail.createdOn
+ this.sessionService.editSession(id, this.detail).subscribe((res) => {
+  this.closeEditModal.nativeElement.click();
+  this.detail = {};
+  this.ui.loader.hide()
+  this.getSessionList()
+ },err => {
+  this.ui.loader.hide()
+ })
+  
+}
+
+getSessionDetail(id) {
+  this.ui.loader.show()
+  this.sessionService.getSessionDetail(id).subscribe((res) => {
+     if(res.data) {
+       this.detail = res.data
+       this.ui.loader.hide()
+     }
+  },err => this.ui.loader.hide())
+}
+
+
 
 
 
