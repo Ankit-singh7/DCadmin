@@ -45,8 +45,11 @@
                       <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Particulars <a href = 'javascript:void(0)' (click)="changeOrder('expense_reason')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.expense_reason" [class.fa-caret-up]="!sortFields.expense_reason"></i></a></th>
+                        <th scope="col">OB <a href = 'javascript:void(0)' (click)="changeOrder('drawer_balance')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.drawer_balance" [class.fa-caret-up]="!sortFields.drawer_balance"></i></a></th>
+                        <th scope="col">IN <a href = 'javascript:void(0)' (click)="changeOrder('in_amount')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.in_amount" [class.fa-caret-up]="!sortFields.in_amount"></i></a></th>
                         <th scope="col">Expense <a href = 'javascript:void(0)' (click)="changeOrder('expense_amount')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.expense_amount" [class.fa-caret-up]="!sortFields.expense_amount"></i></a></th>
                         <th scope="col">Total Expense <a href = 'javascript:void(0)' (click)="changeOrder('total_expense_amount')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.total_expense_amount" [class.fa-caret-up]="!sortFields.total_expense_amount"></i></a></th>
+                        <th scope="col">CB <a href = 'javascript:void(0)' (click)="changeOrder('closing_balance')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.closing_balance" [class.fa-caret-up]="!sortFields.closing_balance"></i></a></th>
                         <th scope="col">Staff <a href = 'javascript:void(0)' (click)="changeOrder('employee_name')" class="caret-sort"><i class="fa" [class.fa-caret-down]="sortFields.employee_name" [class.fa-caret-up]="!sortFields.employee_name"></i></a></th>
                       </tr>
                     </thead>
@@ -54,8 +57,11 @@
                       <tr *ngFor = "let item of expenseList">
                         <td>{{item.createdOn | date:'MMM d, y' }}</td>
                         <td>{{item.expense_reason}}</td>
+                        <td>&#x20B9; {{item.drawer_balance}}</td>
+                        <td>&#x20B9; {{item.in_amount}}</td>
                         <td>&#x20B9; {{item.expense_amount}}</td>
                         <td>&#x20B9; {{item.total_expense_amount}}</td>
+                        <td>&#x20B9; {{item.closing_balance}}</td>
                         <td>{{item.employee_name}}</td>
                       </tr>
                      </tbody>

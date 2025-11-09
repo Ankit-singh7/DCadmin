@@ -29,7 +29,10 @@ export class EmployeeExpenseListComponent implements OnInit {
     expense_amount: true,
     expense_reason:true,
     employee_name:true,
-    total_expense_amount: true
+    total_expense_amount: true,
+    drawer_balance: true,
+    closing_balance: true,
+    in_amount: true
   };
 
   public expenseList = [];
@@ -90,12 +93,14 @@ export class EmployeeExpenseListComponent implements OnInit {
         this.expenseList = res.data.result.map((item) => {
           let expenseReasons = '';
           let expenseAmounts = '';
+          let totalInAmount = '';
           let totalExpenseAmount = 0;
         
           if (Array.isArray(item.expenses)) {
             // Handling new format (expenses array)
             expenseReasons = item.expenses.map((exp) => exp.expense_reason).join(', ');
             expenseAmounts = item.expenses.map((exp) => exp.expense_amount).join(' + ');
+            totalInAmount = item.expenses.reduce((sum, exp) => sum + Number(exp.in_amount),0)
             totalExpenseAmount = item.expenses.reduce((sum, exp) => sum + Number(exp.expense_amount), 0);
           } else {
             // Handling old format (single values)
@@ -108,6 +113,9 @@ export class EmployeeExpenseListComponent implements OnInit {
             date: moment(item.createdOn).format('YYYY-MM-DD'),
             expense_reason: expenseReasons,
             expense_amount: expenseAmounts,
+            in_amount: totalInAmount,
+            closing_balance: item.expenses[0].closing_balance,
+            drawer_balance: item.expenses[0].drawer_balance,
             total_expense_amount: totalExpenseAmount,
             ...item
           };
